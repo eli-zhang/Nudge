@@ -7,23 +7,47 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9818E4E647C9DF6843AABCDA /* Pods_Nudge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB69F93F71DE67B69DF639F2 /* Pods_Nudge.framework */; };
+		CA0DC8622791E9B2007809F5 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC8562791E9B2007809F5 /* OpenSans-Bold.ttf */; };
+		CA0DC8652791E9B2007809F5 /* OpenSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC8592791E9B2007809F5 /* OpenSans-MediumItalic.ttf */; };
+		CA0DC8662791E9B2007809F5 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC85A2791E9B2007809F5 /* OpenSans-SemiBold.ttf */; };
+		CA0DC8672791E9B2007809F5 /* OpenSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC85B2791E9B2007809F5 /* OpenSans-SemiBoldItalic.ttf */; };
+		CA0DC8692791E9B2007809F5 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC85D2791E9B2007809F5 /* OpenSans-Italic.ttf */; };
+		CA0DC86B2791E9B2007809F5 /* OpenSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC85F2791E9B2007809F5 /* OpenSans-Medium.ttf */; };
+		CA0DC86C2791E9B2007809F5 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC8602791E9B2007809F5 /* OpenSans-Regular.ttf */; };
+		CA0DC86D2791E9B2007809F5 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA0DC8612791E9B2007809F5 /* OpenSans-Light.ttf */; };
+		CA0DC87027933F78007809F5 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0DC86F27933F78007809F5 /* MenuButton.swift */; };
 		CA12C2302791D5C100CF0F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C22F2791D5C100CF0F70 /* AppDelegate.swift */; };
 		CA12C2322791D5C100CF0F70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2312791D5C100CF0F70 /* SceneDelegate.swift */; };
-		CA12C2342791D5C100CF0F70 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2332791D5C100CF0F70 /* ViewController.swift */; };
-		CA12C2372791D5C100CF0F70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA12C2352791D5C100CF0F70 /* Main.storyboard */; };
 		CA12C2392791D5C300CF0F70 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA12C2382791D5C300CF0F70 /* Assets.xcassets */; };
 		CA12C23C2791D5C300CF0F70 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA12C23A2791D5C300CF0F70 /* LaunchScreen.storyboard */; };
+		CA12C2442791DC1500CF0F70 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2432791DC1500CF0F70 /* HomeViewController.swift */; };
+		CA12C2462791DE9200CF0F70 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2452791DE9200CF0F70 /* Colors.swift */; };
+		CA12C2482791DF1800CF0F70 /* NudgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2472791DF1800CF0F70 /* NudgeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		48DBD55D637E352804BC5C4F /* Pods-Nudge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nudge.release.xcconfig"; path = "Target Support Files/Pods-Nudge/Pods-Nudge.release.xcconfig"; sourceTree = "<group>"; };
+		96B8CF595219E370433E90CF /* Pods-Nudge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nudge.debug.xcconfig"; path = "Target Support Files/Pods-Nudge/Pods-Nudge.debug.xcconfig"; sourceTree = "<group>"; };
+		BB69F93F71DE67B69DF639F2 /* Pods_Nudge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nudge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA0DC8562791E9B2007809F5 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		CA0DC8592791E9B2007809F5 /* OpenSans-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-MediumItalic.ttf"; sourceTree = "<group>"; };
+		CA0DC85A2791E9B2007809F5 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		CA0DC85B2791E9B2007809F5 /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		CA0DC85D2791E9B2007809F5 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
+		CA0DC85F2791E9B2007809F5 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Medium.ttf"; sourceTree = "<group>"; };
+		CA0DC8602791E9B2007809F5 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		CA0DC8612791E9B2007809F5 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		CA0DC86F27933F78007809F5 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		CA12C22C2791D5C100CF0F70 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA12C22F2791D5C100CF0F70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA12C2312791D5C100CF0F70 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CA12C2332791D5C100CF0F70 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		CA12C2362791D5C100CF0F70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA12C2382791D5C300CF0F70 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA12C23B2791D5C300CF0F70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA12C23D2791D5C300CF0F70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA12C2432791DC1500CF0F70 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		CA12C2452791DE9200CF0F70 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		CA12C2472791DF1800CF0F70 /* NudgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +55,53 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9818E4E647C9DF6843AABCDA /* Pods_Nudge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52448F207FCD147BBA377712 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				96B8CF595219E370433E90CF /* Pods-Nudge.debug.xcconfig */,
+				48DBD55D637E352804BC5C4F /* Pods-Nudge.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		CA0DC8552791E9A8007809F5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CA0DC8562791E9B2007809F5 /* OpenSans-Bold.ttf */,
+				CA0DC85D2791E9B2007809F5 /* OpenSans-Italic.ttf */,
+				CA0DC8612791E9B2007809F5 /* OpenSans-Light.ttf */,
+				CA0DC85F2791E9B2007809F5 /* OpenSans-Medium.ttf */,
+				CA0DC8592791E9B2007809F5 /* OpenSans-MediumItalic.ttf */,
+				CA0DC8602791E9B2007809F5 /* OpenSans-Regular.ttf */,
+				CA0DC85A2791E9B2007809F5 /* OpenSans-SemiBold.ttf */,
+				CA0DC85B2791E9B2007809F5 /* OpenSans-SemiBoldItalic.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		CA0DC86E27933F69007809F5 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				CA12C2472791DF1800CF0F70 /* NudgeButton.swift */,
+				CA0DC86F27933F78007809F5 /* MenuButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		CA12C2232791D5C100CF0F70 = {
 			isa = PBXGroup;
 			children = (
 				CA12C22E2791D5C100CF0F70 /* Nudge */,
 				CA12C22D2791D5C100CF0F70 /* Products */,
+				52448F207FCD147BBA377712 /* Pods */,
+				D35E6183219C43A1D29B3B77 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +116,25 @@
 		CA12C22E2791D5C100CF0F70 /* Nudge */ = {
 			isa = PBXGroup;
 			children = (
+				CA0DC86E27933F69007809F5 /* Buttons */,
+				CA0DC8552791E9A8007809F5 /* Fonts */,
 				CA12C22F2791D5C100CF0F70 /* AppDelegate.swift */,
+				CA12C2432791DC1500CF0F70 /* HomeViewController.swift */,
 				CA12C2312791D5C100CF0F70 /* SceneDelegate.swift */,
-				CA12C2332791D5C100CF0F70 /* ViewController.swift */,
-				CA12C2352791D5C100CF0F70 /* Main.storyboard */,
+				CA12C2452791DE9200CF0F70 /* Colors.swift */,
 				CA12C2382791D5C300CF0F70 /* Assets.xcassets */,
 				CA12C23A2791D5C300CF0F70 /* LaunchScreen.storyboard */,
 				CA12C23D2791D5C300CF0F70 /* Info.plist */,
 			);
 			path = Nudge;
+			sourceTree = "<group>";
+		};
+		D35E6183219C43A1D29B3B77 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB69F93F71DE67B69DF639F2 /* Pods_Nudge.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +144,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA12C2402791D5C300CF0F70 /* Build configuration list for PBXNativeTarget "Nudge" */;
 			buildPhases = (
+				9578180B33FFE363A03FBF78 /* [CP] Check Pods Manifest.lock */,
 				CA12C2282791D5C100CF0F70 /* Sources */,
 				CA12C2292791D5C100CF0F70 /* Frameworks */,
 				CA12C22A2791D5C100CF0F70 /* Resources */,
+				68B6389122E043B4124E82FF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -125,36 +197,80 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA0DC86B2791E9B2007809F5 /* OpenSans-Medium.ttf in Resources */,
+				CA0DC8672791E9B2007809F5 /* OpenSans-SemiBoldItalic.ttf in Resources */,
+				CA0DC86D2791E9B2007809F5 /* OpenSans-Light.ttf in Resources */,
 				CA12C23C2791D5C300CF0F70 /* LaunchScreen.storyboard in Resources */,
+				CA0DC8692791E9B2007809F5 /* OpenSans-Italic.ttf in Resources */,
 				CA12C2392791D5C300CF0F70 /* Assets.xcassets in Resources */,
-				CA12C2372791D5C100CF0F70 /* Main.storyboard in Resources */,
+				CA0DC8662791E9B2007809F5 /* OpenSans-SemiBold.ttf in Resources */,
+				CA0DC8622791E9B2007809F5 /* OpenSans-Bold.ttf in Resources */,
+				CA0DC8652791E9B2007809F5 /* OpenSans-MediumItalic.ttf in Resources */,
+				CA0DC86C2791E9B2007809F5 /* OpenSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		68B6389122E043B4124E82FF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Nudge/Pods-Nudge-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Nudge/Pods-Nudge-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Nudge/Pods-Nudge-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9578180B33FFE363A03FBF78 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Nudge-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CA12C2282791D5C100CF0F70 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA12C2342791D5C100CF0F70 /* ViewController.swift in Sources */,
 				CA12C2302791D5C100CF0F70 /* AppDelegate.swift in Sources */,
+				CA12C2462791DE9200CF0F70 /* Colors.swift in Sources */,
+				CA0DC87027933F78007809F5 /* MenuButton.swift in Sources */,
 				CA12C2322791D5C100CF0F70 /* SceneDelegate.swift in Sources */,
+				CA12C2442791DC1500CF0F70 /* HomeViewController.swift in Sources */,
+				CA12C2482791DF1800CF0F70 /* NudgeButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		CA12C2352791D5C100CF0F70 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CA12C2362791D5C100CF0F70 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		CA12C23A2791D5C300CF0F70 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -284,6 +400,7 @@
 		};
 		CA12C2412791D5C300CF0F70 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 96B8CF595219E370433E90CF /* Pods-Nudge.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -297,6 +414,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -312,6 +430,7 @@
 		};
 		CA12C2422791D5C300CF0F70 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48DBD55D637E352804BC5C4F /* Pods-Nudge.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -325,6 +444,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
