@@ -7,5 +7,6 @@ target 'Nudge' do
 
   # Pods for Nudge
   pod 'SnapKit'
+  pod 'KeychainAccess'
 
 end

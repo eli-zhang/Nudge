@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class HomeViewController: UIViewController {
     var savedNudgesLabel: UILabel!
@@ -19,6 +20,8 @@ class HomeViewController: UIViewController {
     var addNudgeButton: MenuButton!
     var addFriendButton: MenuButton!
     var settingsButton: MenuButton!
+    
+    var getUserCancellable: AnyCancellable?
     
     let buttonPadding = 30
     
@@ -77,6 +80,21 @@ class HomeViewController: UIViewController {
         divider = UIView()
         divider.backgroundColor = Colors.almostOpaqueWhite
         view.addSubview(divider)
+        
+        getUserCancellable = NetworkManager.getUserInfo()
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                        case .failure(let error): print("Error: \(error)")
+                        case .finished: print("Successfully fetched user info.")
+                    }
+                },
+                receiveValue: { userInfo in
+                    print(userInfo)
+                }
+            )
+        
 
         setUpConstraints()
     }
@@ -101,7 +119,7 @@ class HomeViewController: UIViewController {
         }
         nudgeButtonStack.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view).inset(buttonPadding)
-            make.center.equalTo(view).offset(-30)
+            make.centerY.equalTo(view).offset(-30)
         }
         divider.snp.makeConstraints { make in
             make.leading.trailing.equalTo(nudgeButton3)

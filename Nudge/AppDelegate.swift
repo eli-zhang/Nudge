@@ -6,11 +6,37 @@
 //
 
 import UIKit
+import KeychainAccess
+import Combine
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    var createUserCancellable: AnyCancellable?
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if CredentialManager.getUserId() == nil {
+            // Auto generate a password and store it in the keychain
+            let len = 10
+            let pswdChars = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+            let password = String((0..<len).map{ _ in pswdChars[Int(arc4random_uniform(UInt32(pswdChars.count)))]})
+            
+            createUserCancellable = NetworkManager.createUser(password: password)
+                .receive(on: DispatchQueue.main)
+                .sink(
+                    receiveCompletion: { completion in
+                        switch completion {
+                            case .failure(let error): print("Error: \(error)")
+                            case .finished: print("Successfully created user.")
+                        }
+                    },
+                    receiveValue: { userId in
+                        CredentialManager.setPassword(password: password)
+                        CredentialManager.setUserId(userId: userId)
+                    }
+                )
+        }
+
         return true
     }
 
