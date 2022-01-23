@@ -7,11 +7,26 @@
 
 import Foundation
 
-struct Nudge: Codable {
+struct User: Codable {
+    let _id: String
+    let name: String?
+    let friendCode: String
+    let friends: [String]
+    let groups: [String]
+    let nudges: [String]
+}
+
+struct NudgePopulated: Codable {
     let _id: String
     let message: String
-    let assignedFriends: [String]?
-    let assignedGroup: String?
+    let assignedFriends: [User]?
+    let assignedGroup: Group?
+}
+
+struct Group: Codable {
+    let name: String
+    let members: [String]
+    let groupCode: String
 }
 
 struct NetworkTypes {
@@ -53,7 +68,7 @@ struct NetworkTypes {
             let friendCode: String
             let friends: [String]
             let groups: [String]
-            let nudges: [Nudge]
+            let nudges: [NudgePopulated]
         }
     }
     
@@ -67,11 +82,34 @@ struct NetworkTypes {
         struct Data: Codable {}
     }
     
-    enum DeleteFriend {
-        typealias Response = NetworkTypes.Response<Data>
+    enum CreateGroup {
+        struct Body: Codable {
+            let groupName: String
+            let memberIds: [String]
+        }
     }
     
-    enum CreateGroup {
-        
+    enum AddGroupMember {
+        struct Body: Codable {
+            let groupCode: String
+        }
+    }
+    
+    enum RemoveGroupMember {
+        struct Body: Codable {
+            let groupId: String
+        }
+    }
+    
+    enum CreateNudge {
+        struct Body: Codable {
+            let message: String
+            let assignedFriends: [String]
+            let assignedGroup: String?
+        }
+    }
+    
+    enum PingNudge {
+        struct Body: Codable {}
     }
 }

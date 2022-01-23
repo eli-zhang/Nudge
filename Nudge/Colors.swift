@@ -10,6 +10,7 @@ import UIKit
 
 struct Colors {
     static let transpWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.35)
+    static let offWhite = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.00)
     static let almostOpaqueWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.9)
     static let gray = UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1.00)
     static let transpGray = UIColor(red: 0.01, green: 0.01, blue: 0.01, alpha: 0.44)

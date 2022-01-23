@@ -36,6 +36,46 @@ extension NetworkManager {
         let body = NetworkTypes.AddFriend.Body(friendCode: friendCode)
         return postRequestAndDecode(route: "/user/\(userId)/friend/addCode", body: body)
     }
+    
+    static func removeFriend(friendId: String) -> AnyPublisher<String, Error> {
+        let userId = CredentialManager.getUserId()!
+        return deleteRequestAndDecode(route: "/user/\(userId)/friend/\(friendId)")
+    }
+    
+    static func createGroup(groupName: String, memberIds: [String]) -> AnyPublisher<String, Error> {
+        let userId = CredentialManager.getUserId()!
+        let body = NetworkTypes.CreateGroup.Body(groupName: groupName, memberIds: memberIds)
+        return postRequestAndDecode(route: "/user/\(userId)/group/create", body: body)
+    }
+    
+    static func addGroupMember(groupCode: String) -> AnyPublisher<String, Error> {
+        let userId = CredentialManager.getUserId()!
+        let body = NetworkTypes.AddGroupMember.Body(groupCode: groupCode)
+        return postRequestAndDecode(route: "/user/\(userId)/group/member/add", body: body)
+    }
+    
+    static func removeGroupMember(groupId: String) -> AnyPublisher<String, Error> {
+        let userId = CredentialManager.getUserId()!
+        let body = NetworkTypes.RemoveGroupMember.Body(groupId: groupId)
+        return postRequestAndDecode(route: "/user/\(userId)/group/member/remove", body: body)
+    }
+    
+    static func createNudge(message: String, assignedFriends: [String], assignedGroup: String?) -> AnyPublisher<String, Error> {
+        let userId = CredentialManager.getUserId()!
+        let body = NetworkTypes.CreateNudge.Body(message: message, assignedFriends: assignedFriends, assignedGroup: assignedGroup)
+        return postRequestAndDecode(route: "/user/\(userId)/nudge/create", body: body)
+    }
+    
+    static func deleteNudge(nudgeId: String) -> AnyPublisher<String, Error> {
+        let userId = CredentialManager.getUserId()!
+        return deleteRequestAndDecode(route: "/user/\(userId)/nudge/\(nudgeId)")
+    }
+    
+    static func pingNudge(nudgeId: String) -> AnyPublisher<String, Error> {
+        let userId = CredentialManager.getUserId()!
+        let body = NetworkTypes.PingNudge.Body()
+        return postRequestAndDecode(route: "/user/\(userId)/nudge/\(nudgeId)/ping", body: body)
+    }
 }
 
 // Reference: https://medium.com/better-programming/upgrade-your-swift-api-client-with-combine-4897d6e408a0
@@ -63,7 +103,7 @@ enum NetworkManager {
 
     static func postRequest<T: Codable>(
         route: String,
-        body: T,
+        body: T?,
         token: String? = nil
     ) throws -> URLSession.DataTaskPublisher {
         guard let fullURL = URL(string: "\(serverURL)\(route)") else {
@@ -78,11 +118,14 @@ enum NetworkManager {
             headers["Authorization"] = "Bearer \(tokenString)"
         }
         let encoder = JSONEncoder()
-        guard let postData = try? encoder.encode(body) else {
-            throw NetworkError.invalidBody
+        if let body = body {
+            guard let postData = try? encoder.encode(body) else {
+                throw NetworkError.invalidBody
+            }
+            request.httpBody = postData as Data
         }
+        
         request.httpMethod = "POST"
-        request.httpBody = postData as Data
         request.allHTTPHeaderFields = headers
 
         return URLSession.shared.dataTaskPublisher(for: request)
@@ -90,13 +133,12 @@ enum NetworkManager {
 
     static func postRequestAndDecode<B: Codable, R: Codable>(
         route: String,
-        body: B,
+        body: B? = nil,
         token: String? = nil
     ) -> AnyPublisher<R, Error> {
         do {
             return try postRequest(route: route, body: body, token: token)
                 .tryMap { try validate($0.data, $0.response) }
-//                .handleEvents(receiveOutput: { prettyPrintResponseData($0) })
                 .decode(type: NetworkTypes.Response<R>.self, decoder: JSONDecoder())
                 .tryMap(decodeResponse)
                 .eraseToAnyPublisher()
@@ -143,7 +185,52 @@ enum NetworkManager {
         do {
             return try getRequest(route: route, token: token, params: params)
                 .tryMap { try validate($0.data, $0.response) }
-//                .handleEvents(receiveOutput: { prettyPrintResponseData($0) })
+                .decode(type: NetworkTypes.Response<R>.self, decoder: JSONDecoder())
+                .tryMap(decodeResponse)
+                .eraseToAnyPublisher()
+        } catch {
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+    }
+    
+    static func deleteRequest(
+        route: String,
+        token: String? = nil,
+        params: [String: String]? = nil
+    ) throws -> URLSession.DataTaskPublisher {
+        var components = URLComponents(string: "\(serverURL)\(route)")
+        if let queryParams = params {
+            components?.queryItems = queryParams.map { (key, value) in
+                    URLQueryItem(name: key, value: value)
+            }
+        }
+
+        guard let url = components?.url else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        var headers = [
+            "Content-Type": "application/json",
+            "cache-control": "no-cache"
+        ]
+        if let tokenString = token {
+            headers["Authorization"] = "Bearer \(tokenString)"
+        }
+        request.httpMethod = "DELETE"
+        request.allHTTPHeaderFields = headers
+
+        return URLSession.shared.dataTaskPublisher(for: request)
+    }
+    
+    static func deleteRequestAndDecode<R: Codable>(
+        route: String,
+        token: String? = nil,
+        params: [String: String]? = nil
+    ) -> AnyPublisher<R, Error> {
+        do {
+            return try deleteRequest(route: route, token: token, params: params)
+                .tryMap { try validate($0.data, $0.response) }
                 .decode(type: NetworkTypes.Response<R>.self, decoder: JSONDecoder())
                 .tryMap(decodeResponse)
                 .eraseToAnyPublisher()
