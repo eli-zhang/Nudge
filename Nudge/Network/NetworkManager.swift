@@ -15,12 +15,12 @@ extension NetworkManager {
         
     }
 
-    static func createUser(password: String) -> AnyPublisher<NetworkTypes.CreateUser.Data, Error> {
-        let body = NetworkTypes.CreateUser.Body(password: password)
+    static func createUser(password: String, deviceToken: String? = nil) -> AnyPublisher<NetworkTypes.CreateUser.Data, Error> {
+        let body = NetworkTypes.CreateUser.Body(password: password, deviceToken: deviceToken)
         return postRequestAndDecode(route: "/user/create", body: body)
     }
 
-    static func updateUserInfo(name: String, deviceToken: String) -> AnyPublisher<NetworkTypes.UpdateUserInfo.Data, Error> {
+    static func updateUserInfo(name: String? = nil, deviceToken: String? = nil) -> AnyPublisher<String, Error> {
         let userId = CredentialManager.getUserId()!
         let body = NetworkTypes.UpdateUserInfo.Body(name: name, deviceToken: deviceToken)
         return postRequestAndDecode(route: "/user/\(userId)/update", body: body)
@@ -63,7 +63,7 @@ enum NetworkManager {
 
     static func postRequest<T: Codable>(
         route: String,
-        data: T,
+        body: T,
         token: String? = nil
     ) throws -> URLSession.DataTaskPublisher {
         guard let fullURL = URL(string: "\(serverURL)\(route)") else {
@@ -78,7 +78,7 @@ enum NetworkManager {
             headers["Authorization"] = "Bearer \(tokenString)"
         }
         let encoder = JSONEncoder()
-        guard let postData = try? encoder.encode(data) else {
+        guard let postData = try? encoder.encode(body) else {
             throw NetworkError.invalidBody
         }
         request.httpMethod = "POST"
@@ -94,7 +94,7 @@ enum NetworkManager {
         token: String? = nil
     ) -> AnyPublisher<R, Error> {
         do {
-            return try postRequest(route: route, data: body, token: token)
+            return try postRequest(route: route, body: body, token: token)
                 .tryMap { try validate($0.data, $0.response) }
 //                .handleEvents(receiveOutput: { prettyPrintResponseData($0) })
                 .decode(type: NetworkTypes.Response<R>.self, decoder: JSONDecoder())

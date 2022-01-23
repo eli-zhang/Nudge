@@ -7,6 +7,13 @@
 
 import Foundation
 
+struct Nudge: Codable {
+    let _id: String
+    let message: String
+    let assignedFriends: [String]?
+    let assignedGroup: String?
+}
+
 struct NetworkTypes {
 
     struct Response<Data: Codable>: Codable {
@@ -21,6 +28,7 @@ struct NetworkTypes {
 
         struct Body: Codable {
             let password: String
+            let deviceToken: String?
         }
         
         typealias Data = String
@@ -30,8 +38,8 @@ struct NetworkTypes {
         typealias Response = NetworkTypes.Response<Data>
 
         struct Body: Codable {
-            let name: String
-            let deviceToken: String
+            let name: String?
+            let deviceToken: String?
         }
         
         struct Data: Codable {}
@@ -39,13 +47,6 @@ struct NetworkTypes {
     
     enum GetUserInfo {
         typealias Response = NetworkTypes.Response<Data>
-        
-        struct Nudge: Codable {
-            let _id: String
-            let message: String
-            let assignedFriends: [String]?
-            let assignedGroup: String?
-        }
         
         struct Data: Codable {
             let name: String?

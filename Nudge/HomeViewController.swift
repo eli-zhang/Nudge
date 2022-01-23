@@ -7,23 +7,31 @@
 
 import UIKit
 import Combine
+import SnapKit
+
+struct NudgeInfo {
+    
+}
 
 class HomeViewController: UIViewController {
+    
     var savedNudgesLabel: UILabel!
     var showAllLabel: UILabel!
-    var nudgeButtonStack: UIStackView!
-    var nudgeButton1: NudgeButton!
-    var nudgeButton2: NudgeButton!
-    var nudgeButton3: NudgeButton!
+    var nudgeTable: UITableView!
     var divider: UIView!
     var menuStack: UIStackView!
     var addNudgeButton: MenuButton!
     var addFriendButton: MenuButton!
     var settingsButton: MenuButton!
     
+    var nudges: [Nudge] = []
     var getUserCancellable: AnyCancellable?
+    let reuseIdentifier = "nudgeButtonReuseIdentifier"
     
     let buttonPadding = 30
+    let nudgeButtonHeight = 80
+    let nudgeButtonSpacing = 20
+    let nudgeButtonCount = 3
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,23 +51,13 @@ class HomeViewController: UIViewController {
         showAllLabel.textColor = Colors.almostOpaqueWhite
         view.addSubview(showAllLabel)
         
-        nudgeButton1 = NudgeButton()
-        nudgeButton1.configure(color: Colors.pink1, description: "want to eat food", group: "hungry gang", status: .inactive)
-        nudgeButton2 = NudgeButton()
-        nudgeButton2.configure(color: Colors.pink2, description: "let me innnnn", group: "blu doorbell", status: .accepted)
-
-        nudgeButton3 = NudgeButton()
-        nudgeButton3.configure(color: Colors.pink3, description: "im sleeping", group: "blu", status: .rejected)
-        
-        nudgeButtonStack = UIStackView()
-        nudgeButtonStack.axis = .vertical
-        nudgeButtonStack.distribution = .fillProportionally
-        nudgeButtonStack.spacing = 20
-        nudgeButtonStack.addArrangedSubview(nudgeButton1)
-        nudgeButtonStack.addArrangedSubview(nudgeButton2)
-        nudgeButtonStack.addArrangedSubview(nudgeButton3)
-
-        view.addSubview(nudgeButtonStack)
+        nudgeTable = UITableView()
+        nudgeTable.backgroundColor = .clear
+        nudgeTable.dataSource = self
+        nudgeTable.delegate = self
+        nudgeTable.isScrollEnabled = false
+        nudgeTable.register(NudgeButtonTableCell.self, forCellReuseIdentifier: reuseIdentifier)
+        view.addSubview(nudgeTable)
         
         addNudgeButton = MenuButton()
         addNudgeButton.configure(buttonType: .addNudge)
@@ -67,7 +65,7 @@ class HomeViewController: UIViewController {
         addFriendButton.configure(buttonType: .addFriend)
         settingsButton = MenuButton()
         settingsButton.configure(buttonType: .settings)
-        
+
         menuStack = UIStackView()
         menuStack.axis = .horizontal
         menuStack.distribution = .fillProportionally
@@ -90,8 +88,16 @@ class HomeViewController: UIViewController {
                         case .finished: print("Successfully fetched user info.")
                     }
                 },
-                receiveValue: { userInfo in
-                    print(userInfo)
+                receiveValue: { [weak self] userInfo in
+                    guard let self = self else { return }
+                    self.nudges = userInfo.nudges
+                    let nudgesShown = min(self.nudgeButtonCount, self.nudges.count)
+                    self.nudgeTable.reloadData()
+                    self.nudgeTable.snp.updateConstraints { make in
+                        make.leading.trailing.equalTo(self.view)
+                        make.centerY.equalTo(self.view).offset(-30)
+                        make.height.equalTo((self.nudgeButtonHeight + self.nudgeButtonSpacing) * nudgesShown + 10)
+                    }
                 }
             )
         
@@ -101,35 +107,54 @@ class HomeViewController: UIViewController {
         
     func setUpConstraints() {
         savedNudgesLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nudgeButton1)
-            make.bottom.equalTo(nudgeButton1.snp.top).offset(-15)
+            make.leading.equalTo(nudgeTable).offset(buttonPadding)
+            make.bottom.equalTo(nudgeTable.snp.top)
         }
         showAllLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(nudgeButton1)
+            make.trailing.equalTo(nudgeTable).offset(-buttonPadding)
             make.bottom.equalTo(savedNudgesLabel)
         }
-        nudgeButton1.snp.makeConstraints { make in
-            make.height.equalTo(80)
-        }
-        nudgeButton2.snp.makeConstraints { make in
-            make.height.equalTo(80)
-        }
-        nudgeButton3.snp.makeConstraints { make in
-            make.height.equalTo(80)
-        }
-        nudgeButtonStack.snp.makeConstraints { make in
+        nudgeTable.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view).inset(buttonPadding)
             make.centerY.equalTo(view).offset(-30)
+            make.height.equalTo(0)
         }
         divider.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(nudgeButton3)
-            make.top.equalTo(nudgeButton3.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(nudgeTable).inset(buttonPadding)
+            make.top.equalTo(nudgeTable.snp.bottom).offset(20)
             make.height.equalTo(1)
         }
         menuStack.snp.makeConstraints { make in
             make.top.equalTo(divider.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(nudgeButton1)
+            make.leading.trailing.equalTo(nudgeTable).inset(buttonPadding)
             make.height.equalTo(70)
         }
     }
+}
+
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(nudgeButtonHeight + nudgeButtonSpacing)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        min(nudgeButtonCount, nudges.count)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NudgeButtonTableCell
+        cell.setNeedsUpdateConstraints()
+        let nudge = nudges[indexPath.row]
+        var color: UIColor
+        switch indexPath.row {
+        case 0: color = Colors.pink1
+        case 1: color = Colors.pink2
+        case 2: color = Colors.pink3
+        default: color = Colors.pink3
+        }
+        cell.configure(color: color, description: nudge.message, group: "placeholder", status: .inactive)
+        return cell
+    }
+    
+    
 }

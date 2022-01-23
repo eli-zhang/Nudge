@@ -18,6 +18,8 @@ class NudgeButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        translatesAutoresizingMaskIntoConstraints = false
+        
         layer.cornerRadius = 10
         
         containerView = UIView()
