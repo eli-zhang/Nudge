@@ -19,8 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let viewController = HomeViewController()
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let homeController = HomeViewController()
+        let navigationController = UINavigationController(rootViewController: homeController)
+        navigationController.navigationBar.isHidden = true
+        if UserDefaults.standard.string(forKey: "name") == nil {
+            let setupController = ProfileSetupController()
+            navigationController.pushViewController(setupController, animated: false)
+        }
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()

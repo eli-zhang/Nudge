@@ -9,16 +9,11 @@ import UIKit
 import Combine
 import SnapKit
 
-struct NudgeInfo {
-    
-}
-
 class HomeViewController: UIViewController {
     
     var savedNudgesLabel: UILabel!
     var showAllLabel: UILabel!
     var nudgeTable: UITableView!
-    var chooseNameView: ChooseNameView!
     var divider: UIView!
     var menuStack: UIStackView!
     var addNudgeButton: MenuButton!
@@ -27,7 +22,7 @@ class HomeViewController: UIViewController {
     
     var nudges: [NudgePopulated] = []
     var getUserCancellable: AnyCancellable?
-    var updateUserCancellable: AnyCancellable?
+    var pingNudgeCancellable: AnyCancellable?
     let reuseIdentifier = "nudgeButtonReuseIdentifier"
     
     let buttonPadding = 30
@@ -43,20 +38,13 @@ class HomeViewController: UIViewController {
 
         view.addGestureRecognizer(tap)
         
-        chooseNameView = ChooseNameView()
-        chooseNameView.isHidden = true
-        chooseNameView.nameEntryView.delegate = self
-        view.addSubview(chooseNameView)
-        
         savedNudgesLabel = UILabel()
-        savedNudgesLabel.isHidden = true
         savedNudgesLabel.text = "Saved Nudges"
         savedNudgesLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
         savedNudgesLabel.textColor = Colors.almostOpaqueWhite
         view.addSubview(savedNudgesLabel)
         
         showAllLabel = UILabel()
-        showAllLabel.isHidden = true
         showAllLabel.text = "Show All"
         showAllLabel.font = UIFont(name: "OpenSans-Regular", size: 15)
         showAllLabel.textAlignment = .right
@@ -64,7 +52,6 @@ class HomeViewController: UIViewController {
         view.addSubview(showAllLabel)
         
         nudgeTable = UITableView()
-        nudgeTable.isHidden = true
         nudgeTable.backgroundColor = .clear
         nudgeTable.dataSource = self
         nudgeTable.delegate = self
@@ -76,23 +63,34 @@ class HomeViewController: UIViewController {
         addNudgeButton.configure(buttonType: .addNudge)
         addFriendButton = MenuButton()
         addFriendButton.configure(buttonType: .addFriend)
+        addFriendButton.addTarget(self, action: #selector(pushFriendController), for: .touchUpInside)
+        
         settingsButton = MenuButton()
         settingsButton.configure(buttonType: .settings)
+        view.addSubview(settingsButton)
 
         menuStack = UIStackView()
-        menuStack.isHidden = true
         menuStack.axis = .horizontal
         menuStack.distribution = .fillProportionally
         menuStack.spacing = 15
         menuStack.addArrangedSubview(addNudgeButton)
         menuStack.addArrangedSubview(addFriendButton)
-        menuStack.addArrangedSubview(settingsButton)
         view.addSubview(menuStack)
         
         divider = UIView()
-        divider.isHidden = true
         divider.backgroundColor = Colors.almostOpaqueWhite
         view.addSubview(divider)
+        
+        savedNudgesLabel.alpha = 0
+        showAllLabel.alpha = 0
+        nudgeTable.alpha = 0
+        divider.alpha = 0
+        settingsButton.alpha = 0
+        menuStack.alpha = 0
+        addNudgeButton.alpha = 0
+        addFriendButton.alpha = 0
+        settingsButton.alpha = 0
+
         
         getUserCancellable = NetworkManager.getUserInfo()
             .receive(on: DispatchQueue.main)
@@ -105,11 +103,6 @@ class HomeViewController: UIViewController {
                 },
                 receiveValue: { [weak self] userInfo in
                     guard let self = self else { return }
-                    if userInfo.name == nil {
-                        self.showNameConfigure()
-                    } else {
-                        self.showNudgeInfo()
-                    }
                     self.nudges = userInfo.nudges
                     let nudgesShown = min(self.nudgeButtonCount, self.nudges.count)
                     self.nudgeTable.reloadData()
@@ -118,6 +111,7 @@ class HomeViewController: UIViewController {
                         make.centerY.equalTo(self.view).offset(-30)
                         make.height.equalTo((self.nudgeButtonHeight + self.nudgeButtonSpacing) * nudgesShown + 10)
                     }
+                    self.showNudgeInfo()
                 }
             )
         
@@ -126,11 +120,6 @@ class HomeViewController: UIViewController {
     }
         
     func setUpConstraints() {
-        chooseNameView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view).inset(buttonPadding)
-            make.bottom.equalTo(view.snp.centerY)
-            make.height.equalTo(115)
-        }
         savedNudgesLabel.snp.makeConstraints { make in
             make.leading.equalTo(view).inset(buttonPadding)
             make.bottom.equalTo(nudgeTable.snp.top)
@@ -149,11 +138,21 @@ class HomeViewController: UIViewController {
             make.top.equalTo(nudgeTable.snp.bottom).offset(20)
             make.height.equalTo(1)
         }
+        settingsButton.snp.makeConstraints { make in
+            make.top.equalTo(divider.snp.bottom).offset(20)
+            make.trailing.equalTo(view).inset(buttonPadding)
+            make.height.width.equalTo(70)
+        }
         menuStack.snp.makeConstraints { make in
             make.top.equalTo(divider.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(view).inset(buttonPadding)
+            make.leading.equalTo(view).inset(buttonPadding)
+            make.trailing.equalTo(settingsButton.snp.leading).offset(-15)
             make.height.equalTo(70)
         }
+    }
+    
+    @objc func pushFriendController() {
+        navigationController?.pushViewController(FriendViewController(), animated: true)
     }
     
     @objc func dismissKeyboard() {
@@ -173,6 +172,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NudgeButtonTableCell
         cell.setNeedsUpdateConstraints()
+        cell.nudgeButton.tag = indexPath.row
+        cell.nudgeButton.delegate = self
         let nudge = nudges[indexPath.row]
         var color: UIColor
         switch indexPath.row {
@@ -203,71 +204,38 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 return "\(friendNames[0]), \(friendNames[1]) & \(friendNames.count - 2) more"
         }
     }
-}
-
-
-extension HomeViewController: SubmitNameDelegate {
-    func submitName(name: String) {
-        updateUserCancellable = NetworkManager.updateUserInfo(name: name)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { completion in
-                    switch completion {
-                        case .failure(let error): print("Error: \(error)")
-                        case .finished: print("Successfully updated user info.")
-                    }
-                },
-                receiveValue: { [weak self] _ in
-                    guard let self = self else { return }
-                    self.showNudgeInfo()
-                    self.dismissKeyboard()
-                }
-            )
-    }
-    
-    func showNameConfigure() {
-        self.chooseNameView.alpha = 0
-        self.savedNudgesLabel.isHidden = true
-        self.showAllLabel.isHidden = true
-        self.nudgeTable.isHidden = true
-        self.divider.isHidden = true
-        self.menuStack.isHidden = true
-        self.addNudgeButton.isHidden = true
-        self.addFriendButton.isHidden = true
-        self.settingsButton.isHidden = true
-        UIView.animate(withDuration: 0.3, animations: {
-            self.chooseNameView.isHidden = false
-            self.chooseNameView.alpha = 1
-        })
-    }
     
     func showNudgeInfo() {
-        self.chooseNameView.isHidden = true
-        self.savedNudgesLabel.isHidden = false
-        self.showAllLabel.isHidden = false
-        self.nudgeTable.isHidden = false
-        self.divider.isHidden = false
-        self.menuStack.isHidden = false
-        self.addNudgeButton.isHidden = false
-        self.addFriendButton.isHidden = false
-        self.settingsButton.isHidden = false
-        self.savedNudgesLabel.alpha = 0
-        self.showAllLabel.alpha = 0
-        self.nudgeTable.alpha = 0
-        self.divider.alpha = 0
-        self.menuStack.alpha = 0
-        self.addNudgeButton.alpha = 0
-        self.addFriendButton.alpha = 0
-        self.settingsButton.alpha = 0
         UIView.animate(withDuration: 0.3, animations: {
             self.savedNudgesLabel.alpha = 1
             self.showAllLabel.alpha = 1
             self.nudgeTable.alpha = 1
             self.divider.alpha = 1
+            self.settingsButton.alpha = 1
             self.menuStack.alpha = 1
             self.addNudgeButton.alpha = 1
             self.addFriendButton.alpha = 1
             self.settingsButton.alpha = 1
         })
+    }
+}
+
+extension HomeViewController: PingNudgeDelegate {
+    func pingNudge(index: Int) {
+        let nudgeId = nudges[index]._id
+        pingNudgeCancellable = NetworkManager.pingNudge(nudgeId: nudgeId)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                        case .failure(let error): print("Error: \(error)")
+                        case .finished: print("Successfully pinged nudge.")
+                    }
+                },
+                receiveValue: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.dismissKeyboard()
+                }
+            )
     }
 }

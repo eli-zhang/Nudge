@@ -23,4 +23,6 @@ struct Colors {
     static let purple1 = UIColor(red: 0.73, green: 0.53, blue: 0.71, alpha: 1.00)
     static let purple2 = UIColor(red: 0.79, green: 0.59, blue: 0.71, alpha: 1.00)
     static let purple3 = UIColor(red: 0.82, green: 0.62, blue: 0.73, alpha: 1.00)
+    static let richPurple = UIColor(red: 0.56, green: 0.13, blue: 0.44, alpha: 1.00)
+    static let brown = UIColor(red: 0.25, green: 0.19, blue: 0.19, alpha: 1.00)
 }

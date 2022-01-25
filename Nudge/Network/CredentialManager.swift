@@ -9,6 +9,11 @@ import Foundation
 import KeychainAccess
 
 struct CredentialManager {
+    enum CredentialError: Error {
+        case noUserId
+        case noPassword
+    }
+    
     static let keychain = Keychain(service: "elizhang.Nudge")
     
     static func getUserId() -> String? {

@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+protocol PingNudgeDelegate: AnyObject {
+    func pingNudge(index: Int)
+}
+
 class NudgeButton: UIButton {
     var containerView: UIView!
     var descriptionLabel: UILabel!
@@ -15,14 +19,16 @@ class NudgeButton: UIButton {
     var nudgeImage: UIImage!
     var nudgeIcon: UIImageView!
     
+    weak var delegate: PingNudgeDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         translatesAutoresizingMaskIntoConstraints = false
-        
         layer.cornerRadius = 10
         
         containerView = UIView()
+        containerView.isUserInteractionEnabled = false
         containerView.backgroundColor = Colors.transpGray
         containerView.layer.cornerRadius = 10
         containerView.layer.shadowColor = Colors.shadowColor.cgColor
@@ -32,14 +38,17 @@ class NudgeButton: UIButton {
 
         nudgeImage = UIImage(named: "NudgeIconBlack")
         nudgeIcon = UIImageView(image: nudgeImage)
+        nudgeIcon.isUserInteractionEnabled = false
         
         addSubview(containerView)
         addSubview(nudgeIcon)
         descriptionLabel = UILabel()
+        descriptionLabel.isUserInteractionEnabled = false
         descriptionLabel.textColor = .white
         descriptionLabel.font = UIFont(name: "OpenSans-Regular", size: 15)
         
         groupLabel = UILabel()
+        groupLabel.isUserInteractionEnabled = false
         groupLabel.font = UIFont(name: "OpenSans-Bold", size: 10)
         groupLabel.textColor = .white
         addSubview(descriptionLabel)
@@ -49,6 +58,8 @@ class NudgeButton: UIButton {
         self.layer.shadowOpacity = 1
         self.layer.shadowOffset = CGSize(width: 3, height: 4)
         self.layer.shadowRadius = 2
+        
+        addTarget(self, action:#selector(pingNudge(sender:)), for: .touchUpInside)
         
         setUpConstraints()
     }
@@ -90,6 +101,10 @@ class NudgeButton: UIButton {
         nudgeIcon.image = nudgeImage
     }
     
+    @objc func pingNudge(sender: UIButton) {
+        let tag = sender.tag
+        delegate?.pingNudge(index: tag)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

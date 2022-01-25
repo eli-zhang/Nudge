@@ -20,59 +20,80 @@ extension NetworkManager {
         return postRequestAndDecode(route: "/user/create", body: body)
     }
 
-    static func updateUserInfo(name: String? = nil, deviceToken: String? = nil) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
-        let body = NetworkTypes.UpdateUserInfo.Body(name: name, deviceToken: deviceToken)
+    static func updateUserInfo(name: String? = nil, color: String? = nil, deviceToken: String? = nil) -> AnyPublisher<String, Error> {
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
+        
+        let body = NetworkTypes.UpdateUserInfo.Body(name: name, color: color, deviceToken: deviceToken)
         return postRequestAndDecode(route: "/user/\(userId)/update", body: body)
     }
     
     static func getUserInfo() -> AnyPublisher<NetworkTypes.GetUserInfo.Data, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         return getRequestAndDecode(route: "/user/\(userId)")
     }
     
-    static func addFriend(friendCode: String) -> AnyPublisher<NetworkTypes.AddFriend.Data, Error> {
-        let userId = CredentialManager.getUserId()!
-        let body = NetworkTypes.AddFriend.Body(friendCode: friendCode)
-        return postRequestAndDecode(route: "/user/\(userId)/friend/addCode", body: body)
+    static func addFriendOrGroup(code: String) -> AnyPublisher<NetworkTypes.AddFriendOrGroup.Data, Error> {
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
+        let body = NetworkTypes.AddFriendOrGroup.Body(code: code)
+        return postRequestAndDecode(route: "/user/\(userId)/code/add", body: body)
     }
     
     static func removeFriend(friendId: String) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         return deleteRequestAndDecode(route: "/user/\(userId)/friend/\(friendId)")
     }
     
     static func createGroup(groupName: String, memberIds: [String]) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         let body = NetworkTypes.CreateGroup.Body(groupName: groupName, memberIds: memberIds)
         return postRequestAndDecode(route: "/user/\(userId)/group/create", body: body)
     }
     
     static func addGroupMember(groupCode: String) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         let body = NetworkTypes.AddGroupMember.Body(groupCode: groupCode)
         return postRequestAndDecode(route: "/user/\(userId)/group/member/add", body: body)
     }
     
     static func removeGroupMember(groupId: String) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         let body = NetworkTypes.RemoveGroupMember.Body(groupId: groupId)
         return postRequestAndDecode(route: "/user/\(userId)/group/member/remove", body: body)
     }
     
     static func createNudge(message: String, assignedFriends: [String], assignedGroup: String?) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         let body = NetworkTypes.CreateNudge.Body(message: message, assignedFriends: assignedFriends, assignedGroup: assignedGroup)
         return postRequestAndDecode(route: "/user/\(userId)/nudge/create", body: body)
     }
     
     static func deleteNudge(nudgeId: String) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         return deleteRequestAndDecode(route: "/user/\(userId)/nudge/\(nudgeId)")
     }
     
     static func pingNudge(nudgeId: String) -> AnyPublisher<String, Error> {
-        let userId = CredentialManager.getUserId()!
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
         let body = NetworkTypes.PingNudge.Body()
         return postRequestAndDecode(route: "/user/\(userId)/nudge/\(nudgeId)/ping", body: body)
     }

@@ -10,7 +10,7 @@ import Combine
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var createUserCancellable: AnyCancellable?
     var updateUserCancellable: AnyCancellable?
 
@@ -41,6 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 )
         }
+        
+        UNUserNotificationCenter.current().delegate = self
 
         return true
     }
@@ -67,6 +69,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard granted else { return }
             self?.getNotificationSettings()
         }
+        
+        let acceptAction = UNNotificationAction(
+          identifier: "accept",
+          title: "Accept",
+          options: [.foreground])
+        
+        let declineAction = UNNotificationAction(
+          identifier: "decline",
+          title: "Decline",
+          options: [.foreground])
+
+        // 2
+        let responseCategory = UNNotificationCategory(
+          identifier: "response",
+          actions: [acceptAction, declineAction],
+          intentIdentifiers: [],
+          options: [])
+
+        UNUserNotificationCenter.current().setNotificationCategories([responseCategory])
     }
     
     func getNotificationSettings() {
@@ -105,6 +126,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound])
     }
 }
 

@@ -10,6 +10,7 @@ import Foundation
 struct User: Codable {
     let _id: String
     let name: String?
+    let color: String?
     let friendCode: String
     let friends: [String]
     let groups: [String]
@@ -54,6 +55,7 @@ struct NetworkTypes {
 
         struct Body: Codable {
             let name: String?
+            let color: String?
             let deviceToken: String?
         }
         
@@ -72,11 +74,11 @@ struct NetworkTypes {
         }
     }
     
-    enum AddFriend {
+    enum AddFriendOrGroup {
         typealias Response = NetworkTypes.Response<Data>
         
         struct Body: Codable {
-            let friendCode: String
+            let code: String
         }
         
         struct Data: Codable {}

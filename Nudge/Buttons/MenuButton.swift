@@ -33,7 +33,6 @@ class MenuButton: UIButton {
     
     func setUpConstraints() {
         icon.snp.makeConstraints { make in
-            make.width.equalTo(90)
             make.edges.equalTo(self).inset(10)
         }
     }

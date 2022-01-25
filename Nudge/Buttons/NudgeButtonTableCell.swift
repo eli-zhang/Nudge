@@ -39,5 +39,4 @@ class NudgeButtonTableCell: UITableViewCell {
     func configure(color: UIColor, description: String, group: String, status: NudgeStatus) {
         nudgeButton.configure(color: color, description: description, group: group, status: status)
     }
-    
 }
