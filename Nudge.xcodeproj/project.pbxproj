@@ -24,6 +24,9 @@
 		CA12C2442791DC1500CF0F70 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2432791DC1500CF0F70 /* HomeViewController.swift */; };
 		CA12C2462791DE9200CF0F70 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2452791DE9200CF0F70 /* Colors.swift */; };
 		CA12C2482791DF1800CF0F70 /* NudgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA12C2472791DF1800CF0F70 /* NudgeButton.swift */; };
+		CA3D67AF27A330AA00C50D2B /* NewNudgeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67AE27A330AA00C50D2B /* NewNudgeController.swift */; };
+		CA3D67B127A3373400C50D2B /* GroupListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B027A3373400C50D2B /* GroupListCollectionViewCell.swift */; };
+		CA3D67B327A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B227A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift */; };
 		CA5BB39F2799ED7A0087DBC6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5BB39E2799ED7A0087DBC6 /* NetworkManager.swift */; };
 		CA5BB3A12799EE1E0087DBC6 /* NetworkTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5BB3A02799EE1E0087DBC6 /* NetworkTypes.swift */; };
 		CAD049C8279CFCFD00D5F565 /* NudgeButtonTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049C7279CFCFD00D5F565 /* NudgeButtonTableCell.swift */; };
@@ -37,6 +40,7 @@
 		CAD049DA279F834200D5F565 /* UserColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049D9279F834200D5F565 /* UserColorCollectionViewCell.swift */; };
 		CAD049DC27A05E2E00D5F565 /* UserPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049DB27A05E2E00D5F565 /* UserPillView.swift */; };
 		CAD049DE27A05E7300D5F565 /* UserDefaultProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049DD27A05E7300D5F565 /* UserDefaultProfileView.swift */; };
+		CAD049E227A0C4B400D5F565 /* FriendListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049E127A0C4B400D5F565 /* FriendListCollectionViewCell.swift */; };
 		CAE6DED2279C971400980BF5 /* CredentialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE6DED1279C971400980BF5 /* CredentialManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +66,9 @@
 		CA12C2432791DC1500CF0F70 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CA12C2452791DE9200CF0F70 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CA12C2472791DF1800CF0F70 /* NudgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeButton.swift; sourceTree = "<group>"; };
+		CA3D67AE27A330AA00C50D2B /* NewNudgeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNudgeController.swift; sourceTree = "<group>"; };
+		CA3D67B027A3373400C50D2B /* GroupListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListCollectionViewCell.swift; sourceTree = "<group>"; };
+		CA3D67B227A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		CA5BB39E2799ED7A0087DBC6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CA5BB3A02799EE1E0087DBC6 /* NetworkTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTypes.swift; sourceTree = "<group>"; };
 		CAD049C6279C9EAE00D5F565 /* Nudge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nudge.entitlements; sourceTree = "<group>"; };
@@ -76,6 +83,7 @@
 		CAD049D9279F834200D5F565 /* UserColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		CAD049DB27A05E2E00D5F565 /* UserPillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPillView.swift; sourceTree = "<group>"; };
 		CAD049DD27A05E7300D5F565 /* UserDefaultProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultProfileView.swift; sourceTree = "<group>"; };
+		CAD049E127A0C4B400D5F565 /* FriendListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListCollectionViewCell.swift; sourceTree = "<group>"; };
 		CAE6DED1279C971400980BF5 /* CredentialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,8 +128,6 @@
 			children = (
 				CA12C2472791DF1800CF0F70 /* NudgeButton.swift */,
 				CA0DC86F27933F78007809F5 /* MenuButton.swift */,
-				CAD049C7279CFCFD00D5F565 /* NudgeButtonTableCell.swift */,
-				CAD049D9279F834200D5F565 /* UserColorCollectionViewCell.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -148,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				CAD049D2279E337800D5F565 /* ViewControllers */,
+				CAD049E027A0C4A100D5F565 /* Cells */,
 				CAD049CB279DC93800D5F565 /* Views */,
 				CA5BB39D2799EA720087DBC6 /* Network */,
 				CA0DC86E27933F69007809F5 /* Buttons */,
@@ -193,8 +200,21 @@
 				CA12C2432791DC1500CF0F70 /* HomeViewController.swift */,
 				CAD049D7279F7C8C00D5F565 /* ProfileSetupController.swift */,
 				CAD049D3279E33FA00D5F565 /* FriendViewController.swift */,
+				CA3D67AE27A330AA00C50D2B /* NewNudgeController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		CAD049E027A0C4A100D5F565 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				CAD049C7279CFCFD00D5F565 /* NudgeButtonTableCell.swift */,
+				CAD049D9279F834200D5F565 /* UserColorCollectionViewCell.swift */,
+				CAD049E127A0C4B400D5F565 /* FriendListCollectionViewCell.swift */,
+				CA3D67B027A3373400C50D2B /* GroupListCollectionViewCell.swift */,
+				CA3D67B227A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		D35E6183219C43A1D29B3B77 /* Frameworks */ = {
@@ -329,8 +349,11 @@
 			files = (
 				CAD049CF279E19C200D5F565 /* ContainerActionView.swift in Sources */,
 				CAD049CD279DC95000D5F565 /* ChooseNameView.swift in Sources */,
+				CA3D67AF27A330AA00C50D2B /* NewNudgeController.swift in Sources */,
 				CAD049D8279F7C8C00D5F565 /* ProfileSetupController.swift in Sources */,
 				CA12C2302791D5C100CF0F70 /* AppDelegate.swift in Sources */,
+				CA3D67B327A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift in Sources */,
+				CAD049E227A0C4B400D5F565 /* FriendListCollectionViewCell.swift in Sources */,
 				CA12C2462791DE9200CF0F70 /* Colors.swift in Sources */,
 				CA0DC87027933F78007809F5 /* MenuButton.swift in Sources */,
 				CA5BB39F2799ED7A0087DBC6 /* NetworkManager.swift in Sources */,
@@ -340,6 +363,7 @@
 				CAD049D6279E5A7000D5F565 /* AddFriendCodeView.swift in Sources */,
 				CAD049D4279E33FA00D5F565 /* FriendViewController.swift in Sources */,
 				CAD049DC27A05E2E00D5F565 /* UserPillView.swift in Sources */,
+				CA3D67B127A3373400C50D2B /* GroupListCollectionViewCell.swift in Sources */,
 				CAD049DA279F834200D5F565 /* UserColorCollectionViewCell.swift in Sources */,
 				CA12C2322791D5C100CF0F70 /* SceneDelegate.swift in Sources */,
 				CAD049C8279CFCFD00D5F565 /* NudgeButtonTableCell.swift in Sources */,

@@ -30,7 +30,7 @@ enum ColorType {
         }
     }
     
-    func stringToColor(string: String) -> ColorType {
+    static func stringToColor(_ string: String) -> ColorType {
         switch(string) {
         case "WHITE":
             return .white

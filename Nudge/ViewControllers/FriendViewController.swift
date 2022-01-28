@@ -23,12 +23,32 @@ class FriendViewController: UIViewController {
     var divider: UIView!
     var addFriendLabel: UILabel!
     var addFriendCodeView: AddFriendCodeView!
+    var yourFriendsLabel: UILabel!
+    var friendLayout: UICollectionViewFlowLayout!
+    var friendsCollectionView: UICollectionView!
+    
+    var yourGroupsLabel: UILabel!
+    var groupsLayout: UICollectionViewFlowLayout!
+    var groupsCollectionView: UICollectionView!
     
     var getUserCancellable: AnyCancellable?
     var addFriendCancellable: AnyCancellable?
     
-    let reuseIdentifier = "nudgeButtonReuseIdentifier"
+    var friends: [User] = []
+    var groups: [GroupPopulated] = []
+    
+    let friendReuseIdentifier = "friendListReuseIdentifier"
+    let groupReuseIdentifier = "groupListReuseIdentifier"
+    let newGroupReuseIdentifier = "groupListNewReuseIdentifier"
     let buttonPadding = 30
+    
+    convenience init(user: UserPopulated?) {
+        self.init()
+        if let user = user {
+            self.friends = user.friends
+            self.groups = user.groups
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,7 +110,7 @@ class FriendViewController: UIViewController {
         containerView.addSubview(myFriendCodeView)
         
         divider = UIView()
-        divider.backgroundColor = Colors.almostOpaqueWhite
+        divider.backgroundColor = Colors.halfOpacityWhite
         containerView.addSubview(divider)
         
         addFriendLabel = UILabel()
@@ -104,6 +124,47 @@ class FriendViewController: UIViewController {
         addFriendCodeView.delegate = self
         containerView.addSubview(addFriendCodeView)
         
+        yourFriendsLabel = UILabel()
+        yourFriendsLabel.text = "Your friends"
+        yourFriendsLabel.textColor = Colors.almostOpaqueWhite
+        yourFriendsLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        containerView.addSubview(yourFriendsLabel)
+        
+        friendLayout = UICollectionViewFlowLayout()
+        friendLayout.scrollDirection = .horizontal
+        friendLayout.minimumInteritemSpacing = 10
+        friendLayout.itemSize = CGSize(width: 120, height: 52)
+        
+        friendsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: friendLayout)
+        friendsCollectionView.register(FriendListCollectionViewCell.self, forCellWithReuseIdentifier: friendReuseIdentifier)
+        friendsCollectionView.dataSource = self
+        friendsCollectionView.delegate = self
+        friendsCollectionView.backgroundColor = .clear
+        friendsCollectionView.layer.masksToBounds = false
+        friendsCollectionView.alwaysBounceHorizontal = true
+        containerView.addSubview(friendsCollectionView)
+        
+        yourGroupsLabel = UILabel()
+        yourGroupsLabel.text = "Your groups"
+        yourGroupsLabel.textColor = Colors.almostOpaqueWhite
+        yourGroupsLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        containerView.addSubview(yourGroupsLabel)
+        
+        groupsLayout = UICollectionViewFlowLayout()
+        groupsLayout.scrollDirection = .horizontal
+        groupsLayout.minimumInteritemSpacing = 10
+        groupsLayout.itemSize = CGSize(width: 80, height: 80)
+
+        groupsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: groupsLayout)
+        groupsCollectionView.register(GroupListCollectionViewCell.self, forCellWithReuseIdentifier: groupReuseIdentifier)
+        groupsCollectionView.register(GroupListNewCollectionViewCell.self, forCellWithReuseIdentifier: newGroupReuseIdentifier)
+        groupsCollectionView.dataSource = self
+        groupsCollectionView.delegate = self
+        groupsCollectionView.backgroundColor = .clear
+        groupsCollectionView.layer.masksToBounds = false
+        groupsCollectionView.alwaysBounceHorizontal = true
+        containerView.addSubview(groupsCollectionView)
+        
         getUserCancellable = NetworkManager.getUserInfo()
             .receive(on: DispatchQueue.main)
             .sink(
@@ -116,6 +177,10 @@ class FriendViewController: UIViewController {
                 receiveValue: { [weak self] userInfo in
                     guard let self = self else { return }
                     self.myFriendCodeView.textField.text = userInfo.friendCode
+                    self.friends = userInfo.friends
+                    self.groups = userInfo.groups
+                    self.friendsCollectionView.reloadData()
+                    self.groupsCollectionView.reloadData()
                 }
             )
 
@@ -137,7 +202,7 @@ class FriendViewController: UIViewController {
             make.height.width.equalTo(40)
         }
         containerView.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalTo(view)
+            make.leading.trailing.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         myFriendCodeLabel.snp.makeConstraints { make in
             make.bottom.equalTo(myFriendCodeView.snp.top).offset(-15)
@@ -149,19 +214,39 @@ class FriendViewController: UIViewController {
             make.height.equalTo(80)
         }
         divider.snp.makeConstraints { make in
+            make.bottom.equalTo(addFriendLabel.snp.top).offset(-20)
+
             make.leading.trailing.equalTo(containerView).inset(buttonPadding)
-            make.centerY.equalTo(containerView)
             make.height.equalTo(1)
         }
         addFriendLabel.snp.makeConstraints { make in
-            make.top.equalTo(divider.snp.bottom).offset(20)
+            make.bottom.equalTo(addFriendCodeView.snp.top).offset(-15)
             make.leading.trailing.equalTo(containerView).inset(buttonPadding)
         }
         addFriendCodeView.snp.makeConstraints { make in
-            make.top.equalTo(addFriendLabel.snp.bottom).offset(15)
+            make.bottom.equalTo(yourFriendsLabel.snp.top).offset(-45)
             make.leading.trailing.equalTo(containerView).inset(buttonPadding)
             make.height.equalTo(80)
         }
+        yourFriendsLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(friendsCollectionView.snp.top).offset(-15)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        friendsCollectionView.snp.makeConstraints { make in
+            make.bottom.equalTo(yourGroupsLabel.snp.top).offset(-20)
+            make.height.equalTo(52)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        yourGroupsLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(groupsCollectionView.snp.top).offset(-15)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        groupsCollectionView.snp.makeConstraints { make in
+            make.bottom.equalTo(containerView).offset(-60)
+            make.height.equalTo(80)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        
     }
     
     func showNotification(text: String) {
@@ -196,8 +281,8 @@ class FriendViewController: UIViewController {
         let delta = myFriendCodeView.frame.maxY - keyboardFrame.minY
         
         containerView.snp.updateConstraints { make in
-            make.leading.trailing.equalTo(view)
-            make.top.bottom.equalTo(view).offset(delta)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide).offset(delta)
         }
         
         UIView.animate(withDuration: 0.2, animations: {
@@ -207,8 +292,8 @@ class FriendViewController: UIViewController {
 
     @objc func keyboardWillHide(notification: NSNotification) {
         containerView.snp.updateConstraints { make in
-            make.leading.trailing.equalTo(view)
-            make.top.bottom.equalTo(view)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
         UIView.animate(withDuration: 0.2, animations: {
@@ -216,6 +301,37 @@ class FriendViewController: UIViewController {
         })
 
     }
+}
+
+extension FriendViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == self.friendsCollectionView {
+            return friends.count
+        }
+        return groups.count + 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == self.friendsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendReuseIdentifier, for: indexPath) as! FriendListCollectionViewCell
+            let friend = friends[indexPath.item]
+            cell.configure(name: friend.name ?? "",
+                           colorType: ColorType.stringToColor(friend.color ?? ""))
+            return cell
+        }
+        
+        if indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: newGroupReuseIdentifier, for: indexPath) as! GroupListNewCollectionViewCell
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: groupReuseIdentifier, for: indexPath) as! GroupListCollectionViewCell
+            let group = groups[indexPath.item]
+            cell.configure(group: group)
+            return cell
+        }
+    }
+    
+    
 }
 
 extension FriendViewController: UIGestureRecognizerDelegate {

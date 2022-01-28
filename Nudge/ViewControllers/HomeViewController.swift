@@ -20,6 +20,7 @@ class HomeViewController: UIViewController {
     var addFriendButton: MenuButton!
     var settingsButton: MenuButton!
     
+    var user: UserPopulated?
     var nudges: [NudgePopulated] = []
     var getUserCancellable: AnyCancellable?
     var pingNudgeCancellable: AnyCancellable?
@@ -103,6 +104,7 @@ class HomeViewController: UIViewController {
                 },
                 receiveValue: { [weak self] userInfo in
                     guard let self = self else { return }
+                    self.user = userInfo
                     self.nudges = userInfo.nudges
                     let nudgesShown = min(self.nudgeButtonCount, self.nudges.count)
                     self.nudgeTable.reloadData()
@@ -152,7 +154,8 @@ class HomeViewController: UIViewController {
     }
     
     @objc func pushFriendController() {
-        navigationController?.pushViewController(FriendViewController(), animated: true)
+        let friendViewController = FriendViewController(user: self.user)
+        navigationController?.pushViewController(friendViewController, animated: true)
     }
     
     @objc func dismissKeyboard() {

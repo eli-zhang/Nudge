@@ -17,6 +17,26 @@ struct User: Codable {
     let nudges: [String]
 }
 
+struct UserBasic: Codable {
+    let _id: String
+    let name: String?
+    let color: String?
+    let friendCode: String
+    let friends: [String]
+    let groups: [String]
+    let nudges: [NudgePopulated]
+}
+
+struct UserPopulated: Codable {
+    let _id: String
+    let name: String?
+    let color: String?
+    let friendCode: String
+    let friends: [User]
+    let groups: [GroupPopulated]
+    let nudges: [NudgePopulated]
+}
+
 struct NudgePopulated: Codable {
     let _id: String
     let message: String
@@ -27,6 +47,12 @@ struct NudgePopulated: Codable {
 struct Group: Codable {
     let name: String
     let members: [String]
+    let groupCode: String
+}
+
+struct GroupPopulated: Codable {
+    let name: String
+    let members: [User]
     let groupCode: String
 }
 
@@ -65,13 +91,13 @@ struct NetworkTypes {
     enum GetUserInfo {
         typealias Response = NetworkTypes.Response<Data>
         
-        struct Data: Codable {
-            let name: String?
-            let friendCode: String
-            let friends: [String]
-            let groups: [String]
-            let nudges: [NudgePopulated]
-        }
+        typealias Data = UserPopulated
+    }
+    
+    enum GetBasicUserInfo {
+        typealias Response = NetworkTypes.Response<Data>
+        
+        typealias Data = UserBasic
     }
     
     enum AddFriendOrGroup {

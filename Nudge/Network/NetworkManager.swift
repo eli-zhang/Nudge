@@ -36,6 +36,13 @@ extension NetworkManager {
         return getRequestAndDecode(route: "/user/\(userId)")
     }
     
+    static func getBasicUserInfo() -> AnyPublisher<NetworkTypes.GetBasicUserInfo.Data, Error> {
+        guard let userId = CredentialManager.getUserId() else {
+            return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
+        }
+        return getRequestAndDecode(route: "/user/\(userId)/basic")
+    }
+    
     static func addFriendOrGroup(code: String) -> AnyPublisher<NetworkTypes.AddFriendOrGroup.Data, Error> {
         guard let userId = CredentialManager.getUserId() else {
             return Fail(error: CredentialManager.CredentialError.noUserId).eraseToAnyPublisher()
@@ -103,6 +110,8 @@ extension NetworkManager {
 enum NetworkManager {
 
     static let serverURL = "http://192.168.1.36:3000"
+//    static let serverURL = "https://nudge-app-backend.herokuapp.com"
+
     
     enum NetworkError: Error {
         case statusCode(Int)
