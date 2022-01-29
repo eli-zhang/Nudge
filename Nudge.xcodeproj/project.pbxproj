@@ -27,6 +27,8 @@
 		CA3D67AF27A330AA00C50D2B /* NewNudgeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67AE27A330AA00C50D2B /* NewNudgeController.swift */; };
 		CA3D67B127A3373400C50D2B /* GroupListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B027A3373400C50D2B /* GroupListCollectionViewCell.swift */; };
 		CA3D67B327A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B227A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift */; };
+		CA3D67B527A4586500C50D2B /* NewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B427A4586500C50D2B /* NewGroupController.swift */; };
+		CA3D67B927A471E000C50D2B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B827A471DF00C50D2B /* SearchBarView.swift */; };
 		CA5BB39F2799ED7A0087DBC6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5BB39E2799ED7A0087DBC6 /* NetworkManager.swift */; };
 		CA5BB3A12799EE1E0087DBC6 /* NetworkTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5BB3A02799EE1E0087DBC6 /* NetworkTypes.swift */; };
 		CAD049C8279CFCFD00D5F565 /* NudgeButtonTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049C7279CFCFD00D5F565 /* NudgeButtonTableCell.swift */; };
@@ -34,7 +36,7 @@
 		CAD049CD279DC95000D5F565 /* ChooseNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049CC279DC95000D5F565 /* ChooseNameView.swift */; };
 		CAD049CF279E19C200D5F565 /* ContainerActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049CE279E19C200D5F565 /* ContainerActionView.swift */; };
 		CAD049D1279E29B800D5F565 /* MyFriendCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049D0279E29B800D5F565 /* MyFriendCodeView.swift */; };
-		CAD049D4279E33FA00D5F565 /* FriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049D3279E33FA00D5F565 /* FriendViewController.swift */; };
+		CAD049D4279E33FA00D5F565 /* FriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049D3279E33FA00D5F565 /* FriendController.swift */; };
 		CAD049D6279E5A7000D5F565 /* AddFriendCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049D5279E5A7000D5F565 /* AddFriendCodeView.swift */; };
 		CAD049D8279F7C8C00D5F565 /* ProfileSetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049D7279F7C8C00D5F565 /* ProfileSetupController.swift */; };
 		CAD049DA279F834200D5F565 /* UserColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049D9279F834200D5F565 /* UserColorCollectionViewCell.swift */; };
@@ -69,6 +71,8 @@
 		CA3D67AE27A330AA00C50D2B /* NewNudgeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNudgeController.swift; sourceTree = "<group>"; };
 		CA3D67B027A3373400C50D2B /* GroupListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListCollectionViewCell.swift; sourceTree = "<group>"; };
 		CA3D67B227A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureCollectionViewCell.swift; sourceTree = "<group>"; };
+		CA3D67B427A4586500C50D2B /* NewGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupController.swift; sourceTree = "<group>"; };
+		CA3D67B827A471DF00C50D2B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		CA5BB39E2799ED7A0087DBC6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CA5BB3A02799EE1E0087DBC6 /* NetworkTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTypes.swift; sourceTree = "<group>"; };
 		CAD049C6279C9EAE00D5F565 /* Nudge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nudge.entitlements; sourceTree = "<group>"; };
@@ -77,7 +81,7 @@
 		CAD049CC279DC95000D5F565 /* ChooseNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNameView.swift; sourceTree = "<group>"; };
 		CAD049CE279E19C200D5F565 /* ContainerActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerActionView.swift; sourceTree = "<group>"; };
 		CAD049D0279E29B800D5F565 /* MyFriendCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendCodeView.swift; sourceTree = "<group>"; };
-		CAD049D3279E33FA00D5F565 /* FriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendViewController.swift; sourceTree = "<group>"; };
+		CAD049D3279E33FA00D5F565 /* FriendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendController.swift; sourceTree = "<group>"; };
 		CAD049D5279E5A7000D5F565 /* AddFriendCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCodeView.swift; sourceTree = "<group>"; };
 		CAD049D7279F7C8C00D5F565 /* ProfileSetupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupController.swift; sourceTree = "<group>"; };
 		CAD049D9279F834200D5F565 /* UserColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserColorCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 				CAD049D5279E5A7000D5F565 /* AddFriendCodeView.swift */,
 				CAD049DB27A05E2E00D5F565 /* UserPillView.swift */,
 				CAD049DD27A05E7300D5F565 /* UserDefaultProfileView.swift */,
+				CA3D67B827A471DF00C50D2B /* SearchBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -199,8 +204,9 @@
 			children = (
 				CA12C2432791DC1500CF0F70 /* HomeViewController.swift */,
 				CAD049D7279F7C8C00D5F565 /* ProfileSetupController.swift */,
-				CAD049D3279E33FA00D5F565 /* FriendViewController.swift */,
+				CAD049D3279E33FA00D5F565 /* FriendController.swift */,
 				CA3D67AE27A330AA00C50D2B /* NewNudgeController.swift */,
+				CA3D67B427A4586500C50D2B /* NewGroupController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -351,6 +357,7 @@
 				CAD049CD279DC95000D5F565 /* ChooseNameView.swift in Sources */,
 				CA3D67AF27A330AA00C50D2B /* NewNudgeController.swift in Sources */,
 				CAD049D8279F7C8C00D5F565 /* ProfileSetupController.swift in Sources */,
+				CA3D67B527A4586500C50D2B /* NewGroupController.swift in Sources */,
 				CA12C2302791D5C100CF0F70 /* AppDelegate.swift in Sources */,
 				CA3D67B327A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift in Sources */,
 				CAD049E227A0C4B400D5F565 /* FriendListCollectionViewCell.swift in Sources */,
@@ -361,13 +368,14 @@
 				CAD049CA279DC29A00D5F565 /* NameEntryView.swift in Sources */,
 				CAE6DED2279C971400980BF5 /* CredentialManager.swift in Sources */,
 				CAD049D6279E5A7000D5F565 /* AddFriendCodeView.swift in Sources */,
-				CAD049D4279E33FA00D5F565 /* FriendViewController.swift in Sources */,
+				CAD049D4279E33FA00D5F565 /* FriendController.swift in Sources */,
 				CAD049DC27A05E2E00D5F565 /* UserPillView.swift in Sources */,
 				CA3D67B127A3373400C50D2B /* GroupListCollectionViewCell.swift in Sources */,
 				CAD049DA279F834200D5F565 /* UserColorCollectionViewCell.swift in Sources */,
 				CA12C2322791D5C100CF0F70 /* SceneDelegate.swift in Sources */,
 				CAD049C8279CFCFD00D5F565 /* NudgeButtonTableCell.swift in Sources */,
 				CA12C2442791DC1500CF0F70 /* HomeViewController.swift in Sources */,
+				CA3D67B927A471E000C50D2B /* SearchBarView.swift in Sources */,
 				CA12C2482791DF1800CF0F70 /* NudgeButton.swift in Sources */,
 				CAD049D1279E29B800D5F565 /* MyFriendCodeView.swift in Sources */,
 				CAD049DE27A05E7300D5F565 /* UserDefaultProfileView.swift in Sources */,

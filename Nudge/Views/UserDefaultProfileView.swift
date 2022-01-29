@@ -75,25 +75,23 @@ class UserDefaultProfileView: UIView {
     }
     
     func configure(name: String, colorType: ColorType) {
-        UIView.animate(withDuration: 0.3, animations: {
-            switch colorType {
-            case .white:
-                self.backgroundColor = .white
-                self.letterLabel.textColor = Colors.brown
-            case .black:
-                self.backgroundColor = Colors.gray
-                self.letterLabel.textColor = .white
-            case .blue:
-                self.backgroundColor = Colors.blue
-                self.letterLabel.textColor = .white
-            case .red:
-                self.backgroundColor = Colors.red
-                self.letterLabel.textColor = .white
-            case .purple:
-                self.backgroundColor = Colors.richPurple
-                self.letterLabel.textColor = .white
-            }
-        })
+        switch colorType {
+        case .white:
+            self.backgroundColor = .white
+            self.letterLabel.textColor = Colors.brown
+        case .black:
+            self.backgroundColor = Colors.gray
+            self.letterLabel.textColor = .white
+        case .blue:
+            self.backgroundColor = Colors.blue
+            self.letterLabel.textColor = .white
+        case .red:
+            self.backgroundColor = Colors.red
+            self.letterLabel.textColor = .white
+        case .purple:
+            self.backgroundColor = Colors.richPurple
+            self.letterLabel.textColor = .white
+        }
         
         
         letterLabel.text = String(name.prefix(1).uppercased())

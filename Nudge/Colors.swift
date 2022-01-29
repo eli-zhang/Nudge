@@ -14,7 +14,7 @@ struct Colors {
     static let almostOpaqueWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.9)
     static let halfOpacityWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
     static let gray = UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1.00)
-    static let transpGray = UIColor(red: 0.01, green: 0.01, blue: 0.01, alpha: 0.44)
+    static let transpGray = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 0.44)
     static let blue = UIColor(red: 0.19, green: 0.36, blue: 0.61, alpha: 1.00)
     static let red = UIColor(red: 0.72, green: 0.23, blue: 0.40, alpha: 1.00)
     static let shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25)

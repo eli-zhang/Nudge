@@ -1,5 +1,5 @@
 //
-//  FriendViewController.swift
+//  FriendController.swift
 //  Nudge
 //
 //  Created by Eli Zhang on 1/23/22.
@@ -10,7 +10,7 @@ import UIKit
 import Combine
 import AudioToolbox
 
-class FriendViewController: UIViewController {
+class FriendController: UIViewController {
     
     var notificationBanner: UIView!
     var notificationBannerLabel: UILabel!
@@ -34,6 +34,7 @@ class FriendViewController: UIViewController {
     var getUserCancellable: AnyCancellable?
     var addFriendCancellable: AnyCancellable?
     
+    var user: UserPopulated?
     var friends: [User] = []
     var groups: [GroupPopulated] = []
     
@@ -57,6 +58,7 @@ class FriendViewController: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.delegate = self
+        tap.cancelsTouchesInView = false
 
         NotificationCenter.default.addObserver(
             self,
@@ -133,7 +135,6 @@ class FriendViewController: UIViewController {
         friendLayout = UICollectionViewFlowLayout()
         friendLayout.scrollDirection = .horizontal
         friendLayout.minimumInteritemSpacing = 10
-        friendLayout.itemSize = CGSize(width: 120, height: 52)
         
         friendsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: friendLayout)
         friendsCollectionView.register(FriendListCollectionViewCell.self, forCellWithReuseIdentifier: friendReuseIdentifier)
@@ -153,11 +154,11 @@ class FriendViewController: UIViewController {
         groupsLayout = UICollectionViewFlowLayout()
         groupsLayout.scrollDirection = .horizontal
         groupsLayout.minimumInteritemSpacing = 10
-        groupsLayout.itemSize = CGSize(width: 80, height: 80)
 
         groupsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: groupsLayout)
         groupsCollectionView.register(GroupListCollectionViewCell.self, forCellWithReuseIdentifier: groupReuseIdentifier)
         groupsCollectionView.register(GroupListNewCollectionViewCell.self, forCellWithReuseIdentifier: newGroupReuseIdentifier)
+        groupsCollectionView.showsHorizontalScrollIndicator = false
         groupsCollectionView.dataSource = self
         groupsCollectionView.delegate = self
         groupsCollectionView.backgroundColor = .clear
@@ -177,6 +178,7 @@ class FriendViewController: UIViewController {
                 receiveValue: { [weak self] userInfo in
                     guard let self = self else { return }
                     self.myFriendCodeView.textField.text = userInfo.friendCode
+                    self.user = userInfo
                     self.friends = userInfo.friends
                     self.groups = userInfo.groups
                     self.friendsCollectionView.reloadData()
@@ -303,7 +305,7 @@ class FriendViewController: UIViewController {
     }
 }
 
-extension FriendViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension FriendController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.friendsCollectionView {
             return friends.count
@@ -315,7 +317,7 @@ extension FriendViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if collectionView == self.friendsCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendReuseIdentifier, for: indexPath) as! FriendListCollectionViewCell
             let friend = friends[indexPath.item]
-            cell.configure(name: friend.name ?? "",
+            cell.configure(name: friend.name ?? "?",
                            colorType: ColorType.stringToColor(friend.color ?? ""))
             return cell
         }
@@ -325,16 +327,35 @@ extension FriendViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: groupReuseIdentifier, for: indexPath) as! GroupListCollectionViewCell
-            let group = groups[indexPath.item]
+            let group = groups[indexPath.item - 1]
             cell.configure(group: group)
             return cell
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == self.groupsCollectionView {
+            if indexPath.item == 0 {
+                return CGSize(width: 80, height: 80)
+            }
+            return CGSize(width: 130, height: 80)
+        }
+        return CGSize(width: 120, height: 52)
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == self.groupsCollectionView && indexPath.item == 0 {
+            pushNewGroupController()
+        }
+    }
+    
+    func pushNewGroupController() {
+        let newGroupController = NewGroupController(user: user)
+        navigationController?.pushViewController(newGroupController, animated: true)
+    }
 }
 
-extension FriendViewController: UIGestureRecognizerDelegate {
+extension FriendController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view is UIButton {
             return false
@@ -343,7 +364,7 @@ extension FriendViewController: UIGestureRecognizerDelegate {
     }
 }
 
-extension FriendViewController: FinishCopyingDelegate, AddFriendDelegate {
+extension FriendController: FinishCopyingDelegate, AddFriendDelegate {
     func finishCopying() {
         AudioServicesPlaySystemSound(1520)
         showNotification(text: "Copied code!")

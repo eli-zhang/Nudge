@@ -22,20 +22,24 @@ class GroupListCollectionViewCell: UICollectionViewCell, UICollectionViewDelegat
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.cornerRadius = 15
+        contentView.layer.cornerRadius = 10
         
         contentView.backgroundColor = Colors.purple1
         
         groupName = UILabel()
+        groupName.textColor = Colors.almostOpaqueWhite
+        groupName.font = UIFont(name: "OpenSans-Bold", size: 14)
         contentView.addSubview(groupName)
         
         layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 25, height: 25)
-        layout.minimumInteritemSpacing = -20
+        layout.minimumInteritemSpacing = 0
         
         memberListCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         memberListCollection.register(ProfilePictureCollectionViewCell.self, forCellWithReuseIdentifier: memberReuseIdentifier)
+        memberListCollection.delegate = self
+        memberListCollection.dataSource = self
         memberListCollection.backgroundColor = .clear
         contentView.addSubview(memberListCollection)
         
@@ -49,15 +53,17 @@ class GroupListCollectionViewCell: UICollectionViewCell, UICollectionViewDelegat
     
     func setUpConstraints() {
         groupName.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(contentView).inset(20)
+            make.top.leading.trailing.equalTo(contentView).inset(15)
         }
         memberListCollection.snp.makeConstraints { make in
-            make.top.equalTo(groupName.snp.bottom).offset(20)
-            make.bottom.leading.trailing.equalTo(contentView).inset(20)
+//            make.top.equalTo(groupName.snp.bottom).offset(10)
+            make.height.equalTo(26)
+            make.bottom.leading.trailing.equalTo(contentView).inset(15)
         }
     }
     
     func configure(group: GroupPopulated) {
+        self.groupName.text = group.name
         self.members = group.members
         memberListCollection.reloadData()
     }
@@ -67,11 +73,13 @@ class GroupListCollectionViewCell: UICollectionViewCell, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(members)
         return min(members.count, maxMembers)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: memberReuseIdentifier, for: indexPath) as! ProfilePictureCollectionViewCell
+        cell.profilePictureView.layer.cornerRadius = 13
         let member = members[indexPath.item]
         cell.configure(name: member.name ?? "?", colorType: ColorType.stringToColor(member.color ?? "WHITE"))
         return cell

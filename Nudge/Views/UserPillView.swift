@@ -17,7 +17,7 @@ class UserPillView: UIView {
         super.init(frame: frame)
         
         backgroundColor = Colors.purple1
-        layer.cornerRadius = 15
+        layer.cornerRadius = 10
 
         profilePictureView = UserDefaultProfileView()
         addSubview(profilePictureView)

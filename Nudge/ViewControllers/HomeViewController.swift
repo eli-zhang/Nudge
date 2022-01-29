@@ -154,7 +154,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc func pushFriendController() {
-        let friendViewController = FriendViewController(user: self.user)
+        let friendViewController = FriendController(user: self.user)
         navigationController?.pushViewController(friendViewController, animated: true)
     }
     
