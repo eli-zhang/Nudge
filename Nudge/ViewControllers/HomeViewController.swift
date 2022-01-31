@@ -62,6 +62,7 @@ class HomeViewController: UIViewController {
         
         addNudgeButton = MenuButton()
         addNudgeButton.configure(buttonType: .addNudge)
+        addNudgeButton.addTarget(self, action: #selector(pushNudgeController), for: .touchUpInside)
         addFriendButton = MenuButton()
         addFriendButton.configure(buttonType: .addFriend)
         addFriendButton.addTarget(self, action: #selector(pushFriendController), for: .touchUpInside)
@@ -151,6 +152,11 @@ class HomeViewController: UIViewController {
             make.trailing.equalTo(settingsButton.snp.leading).offset(-15)
             make.height.equalTo(70)
         }
+    }
+    
+    @objc func pushNudgeController() {
+        let newNudgeController = NewNudgeController(user: self.user)
+        navigationController?.pushViewController(newNudgeController, animated: true)
     }
     
     @objc func pushFriendController() {

@@ -248,7 +248,6 @@ class FriendController: UIViewController {
             make.height.equalTo(80)
             make.leading.trailing.equalTo(containerView).inset(buttonPadding)
         }
-        
     }
     
     func showNotification(text: String) {

@@ -286,7 +286,7 @@ class NewGroupController: UIViewController, UISearchBarDelegate {
                 receiveCompletion: { completion in
                     switch completion {
                         case .failure(let error): print("Error: \(error)")
-                        case .finished: print("Successfully fetched user info.")
+                        case .finished: print("Successfully created new group.")
                     }
                 },
                 receiveValue: { [weak self] _ in

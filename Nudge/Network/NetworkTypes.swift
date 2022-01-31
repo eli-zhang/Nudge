@@ -45,12 +45,14 @@ struct NudgePopulated: Codable {
 }
 
 struct Group: Codable {
+    let _id: String
     let name: String
     let members: [String]
     let groupCode: String
 }
 
 struct GroupPopulated: Codable {
+    let _id: String
     let name: String
     let members: [User]
     let groupCode: String

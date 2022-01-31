@@ -29,6 +29,7 @@
 		CA3D67B327A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B227A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift */; };
 		CA3D67B527A4586500C50D2B /* NewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B427A4586500C50D2B /* NewGroupController.swift */; };
 		CA3D67B927A471E000C50D2B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67B827A471DF00C50D2B /* SearchBarView.swift */; };
+		CA3D67BB27A7224100C50D2B /* NewNudgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3D67BA27A7224100C50D2B /* NewNudgeView.swift */; };
 		CA5BB39F2799ED7A0087DBC6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5BB39E2799ED7A0087DBC6 /* NetworkManager.swift */; };
 		CA5BB3A12799EE1E0087DBC6 /* NetworkTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5BB3A02799EE1E0087DBC6 /* NetworkTypes.swift */; };
 		CAD049C8279CFCFD00D5F565 /* NudgeButtonTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD049C7279CFCFD00D5F565 /* NudgeButtonTableCell.swift */; };
@@ -73,6 +74,7 @@
 		CA3D67B227A33F9900C50D2B /* ProfilePictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		CA3D67B427A4586500C50D2B /* NewGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupController.swift; sourceTree = "<group>"; };
 		CA3D67B827A471DF00C50D2B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		CA3D67BA27A7224100C50D2B /* NewNudgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNudgeView.swift; sourceTree = "<group>"; };
 		CA5BB39E2799ED7A0087DBC6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CA5BB3A02799EE1E0087DBC6 /* NetworkTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTypes.swift; sourceTree = "<group>"; };
 		CAD049C6279C9EAE00D5F565 /* Nudge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nudge.entitlements; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				CAD049DB27A05E2E00D5F565 /* UserPillView.swift */,
 				CAD049DD27A05E7300D5F565 /* UserDefaultProfileView.swift */,
 				CA3D67B827A471DF00C50D2B /* SearchBarView.swift */,
+				CA3D67BA27A7224100C50D2B /* NewNudgeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				CAD049DA279F834200D5F565 /* UserColorCollectionViewCell.swift in Sources */,
 				CA12C2322791D5C100CF0F70 /* SceneDelegate.swift in Sources */,
 				CAD049C8279CFCFD00D5F565 /* NudgeButtonTableCell.swift in Sources */,
+				CA3D67BB27A7224100C50D2B /* NewNudgeView.swift in Sources */,
 				CA12C2442791DC1500CF0F70 /* HomeViewController.swift in Sources */,
 				CA3D67B927A471E000C50D2B /* SearchBarView.swift in Sources */,
 				CA12C2482791DF1800CF0F70 /* NudgeButton.swift in Sources */,

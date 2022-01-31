@@ -1,266 +1,392 @@
-////
-////  NewNudgeController.swift
-////  Nudge
-////
-////  Created by Eli Zhang on 1/27/22.
-////
 //
-//import Foundation
-//import UIKit
-//import Combine
-//import AudioToolbox
+//  NewNudgeController.swift
+//  Nudge
 //
-//class NewNudgeController: UIViewController {
-//    var containerView: UIView!
-//    var newNotificationPrompt: UILabel!
-//    var messageEntryView: NameEntryView!
-//    var layout: UICollectionViewFlowLayout!
-//    var colorButtonCollectionView: UICollectionView!
-//    var italicLabel: UILabel!
-//    var userPillPreview: UserPillView!
-//    var confirmButton: UIButton!
-//    
-//    var updateUserCancellable: AnyCancellable?
-//    
-//    var name = ""
-//    var selectedColor: ColorType = .white
-//    let reuseIdentifier = "colorButtonReuseIdentifier"
-//    let buttonPadding = 30
+//  Created by Eli Zhang on 1/27/22.
 //
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = UIColor(patternImage: UIImage(named: "Background.png")!)
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-//        tap.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tap)
-//
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(keyboardWillShow),
-//            name: UIResponder.keyboardWillShowNotification,
-//            object: nil
-//        )
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(keyboardWillHide),
-//            name: UIResponder.keyboardWillHideNotification,
-//            object: nil
-//        )
-//        
-//        containerView = UIView()
-//        containerView.backgroundColor = .clear
-//        view.addSubview(containerView)
-//
-//        namePrompt = UILabel()
-//        namePrompt.text = "What's your name?"
-//        namePrompt.font = UIFont(name: "OpenSans-Semibold", size: 18)
-//        namePrompt.textColor = Colors.offWhite
-//        containerView.addSubview(namePrompt)
-//        
-//        nameEntryView = NameEntryView()
-//        nameEntryView.delegate = self
-//        containerView.addSubview(nameEntryView)
-//        
-//        pickColorLabel = UILabel()
-//        pickColorLabel.text = "Pick a color you like:"
-//        pickColorLabel.textColor = Colors.offWhite
-//        pickColorLabel.font = UIFont(name: "OpenSans-Regular", size: 18)
-//        containerView.addSubview(pickColorLabel)
-//        
-//        layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .horizontal
-//        layout.itemSize = CGSize(width: 50, height: 50)
-//        
-//        colorButtonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        colorButtonCollectionView.register(UserColorCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-//        colorButtonCollectionView.delegate = self
-//        colorButtonCollectionView.dataSource = self
-//        colorButtonCollectionView.backgroundColor = .clear
-//        colorButtonCollectionView.layer.masksToBounds = false
-//
-//        containerView.addSubview(colorButtonCollectionView)
-//        
-//        italicLabel = UILabel()
-//        italicLabel.text = "This is what your friends will see."
-//        italicLabel.textColor = Colors.offWhite
-//        italicLabel.font = UIFont(name: "OpenSans-Italic", size: 18)
-//        containerView.addSubview(italicLabel)
-//        
-//        userPillPreview = UserPillView()
-//        containerView.addSubview(userPillPreview)
-//        
-//        confirmButton = UIButton()
-//        confirmButton.setImage(UIImage(named: "Check"), for: .normal)
-//        confirmButton.backgroundColor = .white
-//        confirmButton.layer.cornerRadius = 10
-//        confirmButton.layer.shadowColor = Colors.shadowColor.cgColor
-//        confirmButton.layer.shadowOpacity = 1
-//        confirmButton.layer.shadowOffset = CGSize(width: 3, height: 4)
-//        confirmButton.layer.shadowRadius = 2
-//        confirmButton.addTarget(self, action: #selector(submitProfileInfo), for: .touchUpInside)
-//        containerView.addSubview(confirmButton)
-//        
-//        pickColorLabel.alpha = 0
-//        colorButtonCollectionView.alpha = 0
-//        italicLabel.alpha = 0
-//        userPillPreview.alpha = 0
-//        confirmButton.alpha = 0
-//        
-//        setUpConstraints()
-//    }
-//    
-//    func setUpConstraints() {
-//        containerView.snp.makeConstraints { make in
-//            make.leading.trailing.top.bottom.equalTo(view.safeAreaLayoutGuide)
-//        }
-//        namePrompt.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
-//            make.bottom.equalTo(nameEntryView.snp.top).offset(-15)
-//        }
-//        nameEntryView.snp.makeConstraints { make in
-//            make.bottom.equalTo(pickColorLabel.snp.top).offset(-20)
-//            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
-//            make.height.equalTo(80)
-//        }
-//        pickColorLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(colorButtonCollectionView)
-//            make.bottom.equalTo(colorButtonCollectionView.snp.top).offset(-15)
-//        }
-//        colorButtonCollectionView.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(containerView).offset(buttonPadding)
-//            make.height.equalTo(50)
-//            make.bottom.equalTo(italicLabel.snp.top).offset(-20)
-//        }
-//        italicLabel.snp.makeConstraints { make in
-//            make.bottom.equalTo(userPillPreview.snp.top).offset(-15)
-//            make.leading.equalTo(containerView).inset(buttonPadding)
-//        }
-//        userPillPreview.snp.makeConstraints { make in
-//            make.bottom.equalTo(confirmButton.snp.top).offset(-30)
-//            make.height.equalTo(50)
-//            make.leading.equalTo(containerView).inset(buttonPadding)
-//        }
-//        confirmButton.snp.makeConstraints { make in
-//            make.leading.trailing.bottom.equalTo(containerView).inset(buttonPadding)
-//            make.height.equalTo(55)
-//        }
-//    }
-//    
-//    @objc func keyboardWillShow(notification: NSNotification) {
-//        guard let keyboardFrameValue
-//                = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-//            return
-//        }
-//        let keyboardFrame = keyboardFrameValue.cgRectValue
-//
-//        let delta = nameEntryView.frame.maxY - keyboardFrame.minY
-//        
-//        containerView.snp.updateConstraints { make in
-//            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-//            make.top.bottom.equalTo(view.safeAreaLayoutGuide).offset(delta)
-//        }
-//        
-//        UIView.animate(withDuration: 0.2, animations: {
-//            self.view.layoutIfNeeded()
-//        })
-//    }
-//
-//    @objc func keyboardWillHide(notification: NSNotification) {
-//        containerView.snp.updateConstraints { make in
-//            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-//            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
-//        }
-//        
-//        UIView.animate(withDuration: 0.2, animations: {
-//            self.view.layoutIfNeeded()
-//        })
-//    }
-//    
-//    @objc func dismissKeyboard() {
-//        view.endEditing(true)
-//    }
-//    
-//    @objc func submitProfileInfo() {
-//        let color = self.selectedColor.toString()
-//        updateUserCancellable = NetworkManager.updateUserInfo(name: name, color: color)
-//            .receive(on: DispatchQueue.main)
-//            .sink(
-//                receiveCompletion: { completion in
-//                    switch completion {
-//                        case .failure(let error): print("Error: \(error)")
-//                        case .finished: print("Successfully updated user info.")
-//                    }
-//                },
-//                receiveValue: { [weak self] _ in
-//                    guard let self = self else { return }
-//                    self.view.endEditing(true)
-//                    AudioServicesPlaySystemSound(1519)
-//                    UserDefaults.standard.set(self.name, forKey: "name")
-//                    UIView.animate(withDuration: 0.2, animations: {
-//                        self.containerView.alpha = 0
-//                    })
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-//                        self.dismissViewController()
-//                    })
-//                }
-//            )
-//    }
-//    
-//    func showOtherInfo() {
-//        UIView.animate(withDuration: 0.2, animations: {
-//            self.pickColorLabel.alpha = 1
-//            self.colorButtonCollectionView.alpha = 1
-//            self.italicLabel.alpha = 1
-//            self.userPillPreview.alpha = 1
-//            self.confirmButton.alpha = 1
-//        })
-//    }
-//    
-//    func dismissViewController() {
-//        navigationController?.popViewController(animated: false)
-//    }
-//}
-//
-//extension NewNudgeController: UICollectionViewDelegate, UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 5
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! UserColorCollectionViewCell
-//        switch (indexPath.item) {
-//        case 0:
-//            cell.configure(name: name, colorType: .white)
-//        case 1:
-//            cell.configure(name: name, colorType: .black)
-//        case 2:
-//            cell.configure(name: name, colorType: .blue)
-//        case 3:
-//            cell.configure(name: name, colorType: .red)
-//        case 4:
-//            cell.configure(name: name, colorType: .purple)
-//        default:
-//            cell.configure(name: name, colorType: .white)
-//        }
-//        return cell
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        switch (indexPath.item) {
-//        case 0:
-//            self.selectedColor = .white
-//        case 1:
-//            self.selectedColor = .black
-//        case 2:
-//            self.selectedColor = .blue
-//        case 3:
-//            self.selectedColor = .red
-//        case 4:
-//            self.selectedColor = .purple
-//        default:
-//            self.selectedColor = .white
-//        }
-//        
-//        userPillPreview.configure(name: name, colorType: self.selectedColor)
-//    }
-//}
+
+import Foundation
+import UIKit
+import Combine
+import AudioToolbox
+
+class NewNudgeController: UIViewController, UISearchBarDelegate {
+    var backButton: UIButton!
+    
+    var containerView: UIView!
+    var newNudgeLabel: UILabel!
+    var newNudgeNameView: NewNudgeView!
+    var recipientLabel: UILabel!
+    var friendGroupSearchBar: SearchBarView!
+    var groupsLayout: UICollectionViewFlowLayout!
+    var groupsCollectionView: UICollectionView!
+    var friendLabel: UILabel!
+    var friendLayout: UICollectionViewFlowLayout!
+    var friendsCollectionView: UICollectionView!
+    var confirmButton: UIButton!
+    
+    var getUserCancellable: AnyCancellable?
+    var createNudgeCancellable: AnyCancellable?
+    
+    var friends: [User] = [] {
+        didSet {
+            filteredFriends = friends
+            selectedFriendIds = []
+        }
+    }
+    var filteredFriends: [User] = []
+    var selectedFriendIds: Set<String> = []
+    var selectedGroupId: String? = nil
+    var groups: [GroupPopulated] = [] {
+        didSet {
+            filteredGroups = groups
+            selectedGroupId = nil
+        }
+    }
+    var filteredGroups: [GroupPopulated] = []
+    
+    let friendReuseIdentifier = "friendListReuseIdentifier"
+    let groupReuseIdentifier = "groupListReuseIdentifier"
+    let buttonPadding = 30
+    
+    convenience init(user: UserPopulated?) {
+        self.init()
+        if let user = user {
+            self.friends = user.friends
+            self.filteredFriends = self.friends
+            self.groups = user.groups
+            self.filteredGroups = self.groups
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "Background.png")!)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        tap.delegate = self
+        tap.cancelsTouchesInView = false
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+
+        view.addGestureRecognizer(tap)
+        
+        containerView = UIView() // Make sure this is in the back so it doesn't cover other views
+        containerView.backgroundColor = .clear
+        view.addSubview(containerView)
+        
+        backButton = UIButton()
+        backButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
+        backButton.setImage(UIImage(named: "Back"), for: .normal)
+        view.addSubview(backButton)
+        
+        newNudgeLabel = UILabel()
+        newNudgeLabel.text = "Create a new nudge"
+        newNudgeLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        newNudgeLabel.textColor = Colors.almostOpaqueWhite
+        containerView.addSubview(newNudgeLabel)
+
+        newNudgeNameView = NewNudgeView()
+        containerView.addSubview(newNudgeNameView)
+        
+        recipientLabel = UILabel()
+        recipientLabel.text = "Who are the recipients?"
+        recipientLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        recipientLabel.textColor = Colors.almostOpaqueWhite
+        containerView.addSubview(recipientLabel)
+      
+        friendGroupSearchBar = SearchBarView()
+        friendGroupSearchBar.searchField.addTarget(self, action: #selector(didChangeSearch), for: .editingChanged)
+        friendGroupSearchBar.searchField.attributedPlaceholder = NSAttributedString(
+            string: "Search your groups and friends...",
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.almostOpaqueWhite]
+        )
+        containerView.addSubview(friendGroupSearchBar)
+        
+        groupsLayout = UICollectionViewFlowLayout()
+        groupsLayout.scrollDirection = .horizontal
+        groupsLayout.minimumInteritemSpacing = 10
+
+        groupsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: groupsLayout)
+        groupsCollectionView.register(GroupListCollectionViewCell.self, forCellWithReuseIdentifier: groupReuseIdentifier)
+        groupsCollectionView.showsHorizontalScrollIndicator = false
+        groupsCollectionView.dataSource = self
+        groupsCollectionView.delegate = self
+        groupsCollectionView.backgroundColor = .clear
+        groupsCollectionView.layer.masksToBounds = false
+        groupsCollectionView.alwaysBounceHorizontal = true
+        containerView.addSubview(groupsCollectionView)
+        
+        friendLabel = UILabel()
+        friendLabel.text = "Or pick individually from your friends:"
+        friendLabel.textColor = Colors.almostOpaqueWhite
+        friendLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        containerView.addSubview(friendLabel)
+        
+        friendLayout = UICollectionViewFlowLayout()
+        friendLayout.scrollDirection = .horizontal
+        friendLayout.minimumInteritemSpacing = 10
+        
+        friendsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: friendLayout)
+        friendsCollectionView.register(FriendListCollectionViewCell.self, forCellWithReuseIdentifier: friendReuseIdentifier)
+        friendsCollectionView.allowsMultipleSelection = true
+        friendsCollectionView.dataSource = self
+        friendsCollectionView.delegate = self
+        friendsCollectionView.backgroundColor = .clear
+        friendsCollectionView.layer.masksToBounds = false
+        friendsCollectionView.alwaysBounceHorizontal = true
+        containerView.addSubview(friendsCollectionView)
+        
+        confirmButton = UIButton()
+        confirmButton.setImage(UIImage(named: "Check"), for: .normal)
+        confirmButton.backgroundColor = .white
+        confirmButton.layer.cornerRadius = 10
+        confirmButton.layer.shadowColor = Colors.shadowColor.cgColor
+        confirmButton.layer.shadowOpacity = 1
+        confirmButton.layer.shadowOffset = CGSize(width: 3, height: 4)
+        confirmButton.layer.shadowRadius = 2
+        confirmButton.addTarget(self, action: #selector(submitNudgeInfo), for: .touchUpInside)
+        containerView.addSubview(confirmButton)
+        
+        getUserCancellable = NetworkManager.getUserInfo()
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                        case .failure(let error): print("Error: \(error)")
+                        case .finished: print("Successfully fetched user info.")
+                    }
+                },
+                receiveValue: { [weak self] userInfo in
+                    guard let self = self else { return }
+                    self.friends = userInfo.friends
+                    self.filteredFriends = userInfo.friends
+                    self.friendsCollectionView.reloadData()
+                }
+            )
+
+        setUpConstraints()
+    }
+        
+    func setUpConstraints() {
+        backButton.snp.makeConstraints { make in
+            make.leading.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.height.width.equalTo(40)
+        }
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.top.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        newNudgeLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(newNudgeNameView.snp.top).offset(-15)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        newNudgeNameView.snp.makeConstraints { make in
+            make.bottom.equalTo(recipientLabel.snp.top).offset(-20)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+            make.height.equalTo(80)
+        }
+        recipientLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(friendGroupSearchBar.snp.top).offset(-15)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        friendGroupSearchBar.snp.makeConstraints { make in
+            make.bottom.equalTo(groupsCollectionView.snp.top).offset(-15)
+            make.height.equalTo(40)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        groupsCollectionView.snp.makeConstraints { make in
+            make.bottom.equalTo(friendLabel.snp.top).offset(-20)
+            make.height.equalTo(80)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        friendLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(friendsCollectionView.snp.top).offset(-15)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        friendsCollectionView.snp.makeConstraints { make in
+            make.bottom.equalTo(confirmButton.snp.top).offset(-40)
+            make.height.equalTo(52)
+            make.leading.trailing.equalTo(containerView).inset(buttonPadding)
+        }
+        confirmButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(containerView).inset(buttonPadding)
+            make.height.equalTo(55)
+        }
+    }
+    
+    @objc func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardFrameValue
+                = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+        let keyboardFrame = keyboardFrameValue.cgRectValue
+
+        let delta = newNudgeNameView.frame.maxY - keyboardFrame.minY
+        
+        containerView.snp.updateConstraints { make in
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide).offset(delta)
+        }
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        containerView.snp.updateConstraints { make in
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+
+    }
+    
+    @objc func submitNudgeInfo() {
+        AudioServicesPlaySystemSound(1519)
+        let message = newNudgeNameView.textField.text ?? "No message"
+        createNudgeCancellable = NetworkManager.createNudge(message: message, assignedFriends: Array(selectedFriendIds), assignedGroup: selectedGroupId)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                        case .failure(let error): print("Error: \(error)")
+                        case .finished: print("Successfully created new nudge.")
+                    }
+                },
+                receiveValue: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.navigationController?.popViewController(animated: true)
+                }
+            )
+    }
+    
+    @objc func didChangeSearch() {
+        if let text = friendGroupSearchBar.searchField.text {
+            if !text.isEmpty {
+                filteredFriends = friends.filter ({ friend in
+                    if let valid = friend.name?.lowercased().contains(text.lowercased()) {
+                        return valid
+                    }
+                    return false
+                })
+                filteredGroups = groups.filter ({ group in
+                    return group.name.lowercased().contains(text.lowercased())
+                })
+                friendsCollectionView.reloadData()
+                groupsCollectionView.reloadData()
+                return
+            }
+        }
+        filteredGroups = groups
+        filteredFriends = friends
+        groupsCollectionView.reloadData()
+        friendsCollectionView.reloadData()
+    }
+}
+
+extension NewNudgeController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == self.friendsCollectionView {
+            return filteredFriends.count
+        }
+        return filteredGroups.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == self.friendsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendReuseIdentifier, for: indexPath) as! FriendListCollectionViewCell
+            let friend = filteredFriends[indexPath.item]
+            cell.configure(name: friend.name ?? "?",
+                           colorType: ColorType.stringToColor(friend.color ?? ""))
+            
+            if selectedFriendIds.contains(filteredFriends[indexPath.item]._id) {
+                cell.friendPillView.layer.shadowColor = Colors.shadowColor.cgColor
+                cell.friendPillView.layer.shadowOpacity = 1
+                cell.friendPillView.layer.shadowOffset = CGSize(width: 1, height: 2)
+                cell.friendPillView.layer.shadowRadius = 1
+            } else {
+                cell.friendPillView.layer.shadowColor = Colors.shadowColor.cgColor
+                cell.friendPillView.layer.shadowOpacity = 1
+                cell.friendPillView.layer.shadowOffset = CGSize(width: 3, height: 4)
+                cell.friendPillView.layer.shadowRadius = 2
+            }
+            
+            return cell
+        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: groupReuseIdentifier, for: indexPath) as! GroupListCollectionViewCell
+        if selectedGroupId == filteredGroups[indexPath.item]._id {
+            cell.layer.shadowColor = Colors.shadowColor.cgColor
+            cell.layer.shadowOpacity = 1
+            cell.layer.shadowOffset = CGSize(width: 1, height: 2)
+            cell.layer.shadowRadius = 1
+        } else {
+            cell.layer.shadowColor = Colors.shadowColor.cgColor
+            cell.layer.shadowOpacity = 1
+            cell.layer.shadowOffset = CGSize(width: 3, height: 4)
+            cell.layer.shadowRadius = 2
+        }
+        
+        
+        cell.isUserInteractionEnabled = false
+        let group = filteredGroups[indexPath.item]
+        cell.configure(group: group)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == self.friendsCollectionView {
+            if selectedFriendIds.contains(filteredFriends[indexPath.item]._id) {
+                selectedFriendIds.remove(filteredFriends[indexPath.item]._id)
+            } else {
+                selectedFriendIds.insert(filteredFriends[indexPath.item]._id)
+            }
+            collectionView.deselectItem(at: indexPath, animated: true)
+            collectionView.reloadItems(at: [indexPath])
+        } else {
+            selectedGroupId = filteredGroups[indexPath.item]._id
+            collectionView.deselectItem(at: indexPath, animated: true)
+            collectionView.reloadItems(at: [indexPath])
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == self.groupsCollectionView {
+            return CGSize(width: 130, height: 80)
+        }
+        return CGSize(width: 120, height: 52)
+    }
+}
+
+extension NewNudgeController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UIButton {
+            return false
+        }
+        return true
+    }
+}

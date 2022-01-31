@@ -109,7 +109,7 @@ extension NetworkManager {
 // Reference: https://medium.com/better-programming/upgrade-your-swift-api-client-with-combine-4897d6e408a0
 enum NetworkManager {
 
-    static let serverURL = "http://192.168.1.36:3000"
+    static let serverURL = "http://192.168.128.93:3000"
 //    static let serverURL = "https://nudge-app-backend.herokuapp.com"
 
     

@@ -73,7 +73,6 @@ class GroupListCollectionViewCell: UICollectionViewCell, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(members)
         return min(members.count, maxMembers)
     }
     
