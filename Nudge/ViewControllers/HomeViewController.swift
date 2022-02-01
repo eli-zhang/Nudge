@@ -89,8 +89,6 @@ class HomeViewController: UIViewController {
         divider.alpha = 0
         settingsButton.alpha = 0
         menuStack.alpha = 0
-        addNudgeButton.alpha = 0
-        addFriendButton.alpha = 0
         settingsButton.alpha = 0
 
         
@@ -114,7 +112,11 @@ class HomeViewController: UIViewController {
                         make.centerY.equalTo(self.view).offset(-30)
                         make.height.equalTo((self.nudgeButtonHeight + self.nudgeButtonSpacing) * nudgesShown + 10)
                     }
-                    self.showNudgeInfo()
+                    if self.nudges.isEmpty {
+                        self.showMenuButton()
+                    } else {
+                        self.showNudgeInfo()
+                    }
                 }
             )
         
@@ -214,6 +216,26 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func showMenuButton() {
+        settingsButton.snp.makeConstraints { make in
+            make.centerY.equalTo(view)
+            make.trailing.equalTo(view).inset(buttonPadding)
+            make.height.width.equalTo(70)
+        }
+        menuStack.snp.makeConstraints { make in
+            make.centerY.equalTo(view)
+            make.leading.equalTo(view).inset(buttonPadding)
+            make.trailing.equalTo(settingsButton.snp.leading).offset(-15)
+            make.height.equalTo(70)
+        }
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.settingsButton.alpha = 1
+            self.menuStack.alpha = 1
+            self.settingsButton.alpha = 1
+        })
+    }
+    
     func showNudgeInfo() {
         UIView.animate(withDuration: 0.3, animations: {
             self.savedNudgesLabel.alpha = 1
@@ -222,8 +244,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.divider.alpha = 1
             self.settingsButton.alpha = 1
             self.menuStack.alpha = 1
-            self.addNudgeButton.alpha = 1
-            self.addFriendButton.alpha = 1
             self.settingsButton.alpha = 1
         })
     }

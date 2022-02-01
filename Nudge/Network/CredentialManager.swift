@@ -20,7 +20,7 @@ struct CredentialManager {
         return keychain["userId"]
     }
     
-    static func setUserId(userId: String) {
+    static func setUserId(userId: String?) {
         keychain["userId"] = userId
     }
     
@@ -28,7 +28,7 @@ struct CredentialManager {
         return keychain["password"]
     }
     
-    static func setPassword(password: String) {
+    static func setPassword(password: String?) {
         keychain["password"] = password
     }
 }

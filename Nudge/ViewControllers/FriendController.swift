@@ -26,7 +26,6 @@ class FriendController: UIViewController {
     var yourFriendsLabel: UILabel!
     var friendLayout: UICollectionViewFlowLayout!
     var friendsCollectionView: UICollectionView!
-    
     var yourGroupsLabel: UILabel!
     var groupsLayout: UICollectionViewFlowLayout!
     var groupsCollectionView: UICollectionView!

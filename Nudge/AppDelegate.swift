@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import UserNotifications
+import KeychainAccess
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -16,9 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        DispatchQueue.main.async {
-            UIApplication.shared.registerForRemoteNotifications()
-        }
+//        DispatchQueue.main.async {
+//            UIApplication.shared.registerForRemoteNotifications()
+//        }
+        
+        // Clear settings by uncommenting below
+//        CredentialManager.setPassword(password: nil)
+//        CredentialManager.setUserId(userId: nil)
+//        UserDefaults.standard.set(nil, forKey: "name")
+
         if CredentialManager.getUserId() == nil {
             // Auto generate a password and store it in the keychain
             let len = 10
@@ -44,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UNUserNotificationCenter.current().delegate = self
 
+        registerForPushNotifications()
         return true
     }
 
@@ -91,9 +99,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func getNotificationSettings() {
+        
         UNUserNotificationCenter.current().getNotificationSettings { settings in
-            print("Notification settings: \(settings)")
-            UIApplication.shared.registerForRemoteNotifications()
+//            print("Notification settings: \(settings)")
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
         }
     }
     
@@ -101,8 +112,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
         let token = tokenParts.joined()
+        let storedToken = UserDefaults.standard.string(forKey: "deviceToken")
         // If it hasn't been stored in UserDefaults, we need to update the profile
-        if UserDefaults.standard.string(forKey: "deviceToken") == nil {
+        if storedToken == nil || storedToken != token {
             if CredentialManager.getUserId() != nil {
                 updateUserCancellable = NetworkManager.updateUserInfo(deviceToken: token)
                     .receive(on: DispatchQueue.main)
@@ -132,4 +144,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler([.alert, .badge, .sound])
     }
 }
-
